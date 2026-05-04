@@ -31,36 +31,37 @@ import plux
 class NewDevice(plux.SignalsDev):
     def __init__(self, address):
         plux.SignalsDev.__init__(address)
-        self.duration = 0
         self.frequency = 0
 
     def onRawFrame(self, nSeq, data):  # onRawFrame takes three arguments
         if nSeq % 2000 == 0:
             print(nSeq, *data)
-        return nSeq > self.duration * self.frequency
+        return False  # never stop; interrupted by Ctrl+C
 
 
 # example routines
 
 
 def exampleAcquisition(
-    address="BTH00:07:80:4D:2E:76",
-    duration=20,
+    address="BTH98:D3:51:FE:87:0E",
     frequency=1000,
     active_ports=[1, 2, 3, 4, 5, 6],
-):  # time acquisition for each frequency
+):
     """
-    Example acquisition.
+    Example acquisition. Runs indefinitely until Ctrl+C.
     """
     device = NewDevice(address)
-    device.duration = int(duration)  # Duration of acquisition in seconds.
     device.frequency = int(frequency)  # Samples per second.
-    
+
     # Trigger the start of the data recording: https://www.downloads.plux.info/apis/PLUX-API-Python-Docs/classplux_1_1_signals_dev.html#a028eaf160a20a53b3302d1abd95ae9f1
     device.start(device.frequency, active_ports, 16)
-    device.loop()  # calls device.onRawFrame until it returns True
-    device.stop()
-    device.close()
+    try:
+        device.loop()  # calls device.onRawFrame until it returns True
+    except KeyboardInterrupt:
+        pass
+    finally:
+        device.stop()
+        device.close()
 
 
 if __name__ == "__main__":
