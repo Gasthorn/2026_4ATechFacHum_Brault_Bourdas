@@ -19,28 +19,41 @@ python calibrage.py BTH98:D3:51:FE:87:0E  # explicit device address
 
 # Live BITalino signal acquisition + plots
 python OneBITalinoAcquisitionExample.py
+
+# Headless verification (no pygame/hardware) — MUST stay "ALL GREEN" after edits
+python tools/calibrage_selfcheck.py
 ```
 
 **This environment has no `pygame` (cannot pip-build it) — `python calibrage.py` will not run here.** Validate logic/rendering headless instead.
 
 ## Testing without hardware/pygame
 
-- Stub before `import calibrage`: `sys.modules['pygame']` (Surface/Rect/Font/draw/display fakes; stub `Rect` MUST be iterable — code does `x,y,w,h = rect`) and `plux` with a `SignalsDev` attribute (real `import plux` succeeds but lacks it).
-- Pure detection fns (`detect_ppg_from_rest`, `_estimate_bpm_and_score`, `detect_x/y/z_axis`) are unit-testable with synthetic samples.
-- Render smoke test: drive `App._draw(t)` over every `STATE_*` (+ REC) at 1280×720 / 1100×720 / 1920×1400 to catch typos/API misuse.
-- `python -m py_compile calibrage.py` after every edit.
+- One-liner after every edit: `python -m py_compile calibrage/*.py calibrage.py tools/calibrage_selfcheck.py && python tools/calibrage_selfcheck.py` then `git checkout -- calibration.json`.
+- Selfcheck = pygame/plux stubs + render smoke (all `STATE_*` + PORTS/RECAL panels @ 5 sizes 960×600→2560×1440) + state-flow + detection + JSON gates. Prints `ALL GREEN`. Add asserts here when changing detection/flow.
+- **Stub `Font` has FIXED metrics** (`get_height()=14`, `size()=len*7`) regardless of window → selfcheck proves "no crash / logic", NOT real layout. Verify responsive/overlap math BY HAND at MIN (960×600) and a large window.
+- The selfcheck writes `calibration.json` (sim data) in cwd → `git checkout -- calibration.json` after running.
+- Detection fns in `calibrage/detection.py` are pure — unit-testable with synthetic samples.
 
 ## Gotchas
 
-- `calibrage.py` > 25k tokens → Read with offset/limit chunks.
-- Dead-zone screen uses a deterministic top-down/bottom-up vertical budget; `Slider.draw` value-text offsets are coupled to `_draw_deadzone`. Changing either needs a numeric layout re-check at MIN_H=720 and a large window.
+- `calibrage.py` is an 8-line shim; real code is the `calibrage/` package (`app.py` ~1.3k lines — Read with offset/limit).
+- Calibration step order/numbers derive from `CALIB_STEPS`/`_STEP_NO` in `calibrage/app.py` — single source, never hardcode badge numbers.
+- Test scripts via Bash heredoc: `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` first — Windows console is cp1252 and crashes on `σ`/accents.
+- Bash tool is POSIX (not PowerShell): use `2>/dev/null`, not `$null`.
+- No PPG/cardiac dead zone (removed — was a bad idea). `ppg` block in `calibration.json` is just `{port, bpm_rest}`. PPG still auto-detected first; bpm shown only on the DONE screen.
+- Dead-zone screen: LEFT col = radar + port editor always visible inline (`_draw_port_editor`, ◀▶ AUTO→P1..P6, `_cycle_port`/`_apply_port`). RIGHT col = 3 slider blocks (accel ZM, EMG, EMG AMPLI) + invert toggles + `[RECALIBRER]` + `[VALIDER]`. Block tuple is 7-wide `(lbl,acc,sld,st,stcol,gauge,vstr)`; gauge block is taller. Sliders use `Slider.draw_compact`. `slider_emg` = EMG dead-zone threshold frac; `slider_emg_gain` (block 3) sets EMG amplification live via `_slider_to_emg_gain`/`_emg_gain` (range `EMG_GAIN_MIN..MAX`). `invert_x/y` flip live radar AND saved. `[RECALIBRER]` sets `recal_select_mode=True` → draws `_draw_recal_selector` modal overlay (3 checkboxes ppg/accel/emg, confirm/cancel). Confirmed → `_start_recal(sensors)` builds `recal_queue` consumed by `_advance_recal()`. `MIN_W,MIN_H=960,600`. Any metric change needs a hand re-check at MIN 960×600 + large window (selfcheck can't catch overlap — see Testing).
+- Single-sensor recalibration: `_start_single_recal(target)` jumps to that sensor's first state (`ppg`→REST, `accel`→LR, `emg`→EMG) keeping other data; the chain ends early via `_return_to_deadzone()` (HR branch returns if `recal_target=='ppg'`; UD branch if `=='accel'`; EMG branch always). EMG branch no longer assigns `self.state` directly (selfcheck flow regex updated — EMG→DEADZONE pair gone). Full restart (`_restart_calibration`, bottom button) still resets everything. LR/UD detection now also excludes `emg_port` (None-safe) so accel-only recal can't collide with the EMG port.
+- EMG "toujours relâché"/"mal détecté" — two fixes: (1) `_live_emg` measures σ over the last ~`EMG_CYCLE_SECONDS` only, then amplifies the **excursion above rest** `emg_rest + gain*(raw-emg_rest)` (`gain` from `slider_emg_gain`, default `EMG_GAIN`); threshold stays raw so higher gain ⇒ weak contraction crosses. (2) `detect_emg_port(... , gain=EMG_GAIN)` amplifies the modulation (×gain) so a weak port clears the absolute `EMG_MIN_MOD` floor; returned `sigma_rest/flex` stay RAW (gain only drives the decision). `emg_rest`/`emg_flex` stored RAW. Modulation-ratio test invariant under gain.
+- Selfcheck state-flow assert regexes literal `if self.state ==` / `self.state =` inside `_on_recording_done` only. Transitions via helpers (e.g. `_return_to_deadzone()`) are invisible to it — update the `flow ==` expected list when moving transitions into/out of helpers.
 - When restyling visuals, keep constant/identifier names stable so logic (state machine, detection) stays untouched.
+- `calibrage/` and `tools/` are **untracked** in git. Worktree agents don't get these files — they write to the main working directory regardless of `isolation: "worktree"`. Don't rely on worktree isolation for changes to these dirs.
+- Responsive UI conventions: `Theme(w, h)` takes both dims, scales fonts on `min(w, h)/950`. All main-content panel draw fns use `self.screen.set_clip(rect)` / `set_clip(None)` to prevent text overflow. Vertical text positions always use `font.get_height()`, never hardcoded pixels. `_scope_rect` proportional: `btn_zone = max(100, int(panel.height * 0.24))`. When adding new pygame `Surface` methods, add a no-op to the `Surface` stub in `tools/calibrage_selfcheck.py` or the selfcheck render-smoke will crash.
 
 ## Architecture
 
 **Sensor integration seam:** `InputHandler` class in [tetris.py](tetris.py) is the designed connection point between game logic and sensor input. Its methods (`get_move()`, `get_soft_drop()`, `action_rotate()`, etc.) currently read from `pygame.key.get_pressed()`. To enable sensor control, replace these with BITalino data reads + threshold logic from `calibration.json`.
 
-**Calibration flow:** `calibrage.py` runs a 5-phase UI (rest baseline → X-axis → Y-axis → dead zone tuning) and writes `calibration.json` with device address, axis-to-port mapping, rest baseline ADC values, and movement thresholds.
+**Calibration flow:** `calibrage/` package (shim `calibrage.py` → `app.py`). Modules: `config` (constants/palette), `detection` (PPG/EMG/axis algos), `device` (real+sim), `ui` (CRT widgets/render), `app` (state machine). Order: REPOS+CŒUR → RYTHME CARDIAQUE → G/D → H/B → MUSCLE/EMG → ZONE MORTE. PPG isolated first (accel still); accel detection excludes PPG only (EMG not yet known). EMG **last**: PPG + xyz axes known → EMG port isolated by elimination (weak signal no longer needs absolute σ), confirmed by **modulation** of an envelope. EMG recording is 30 s of randomly-timed on-screen consignes (`_build_emg_plan`: alternating CONTRACTEZ/RELÂCHEZ, each ≥`EMG_MIN_SEG` s, ≥`EMG_MIN_CONTRACT`/`EMG_MIN_RELEASE` of each, sum = `EMG_SECONDS`). ZONE MORTE screen tunes accel dead zone + EMG dead zone (`emg.dead_zone`→`emg.threshold`) + EMG amplification, live state chip + gauge for EMG (`draw_gauge`), G/D & H/B invert toggles, optional `[PORTS]` manual port override editor. No cardiac dead zone. Writes `calibration.json` (ports, `ports_override`, rest baseline, ranges, `dead_zone`, `invert`, `ppg` {port,bpm_rest}, `emg` {port,sigma_rest,sigma_flex,gain,dead_zone,threshold}).
 
 **BITalino device layer:** `Bitalino.py` wraps the PLUX-API. `NewDevice` extends `plux.SignalsDev`, receives frames via `onRawFrame` callback, and feeds thread-safe `deque` buffers. Sampling rate: 1000 Hz (configurable in `calibration.json`).
 
@@ -58,7 +71,9 @@ python OneBITalinoAcquisitionExample.py
 | File | Purpose |
 |------|---------|
 | [tetris.py](tetris.py) | Game engine + `InputHandler` integration seam |
-| [calibrage.py](calibrage.py) | Interactive calibration UI, outputs `calibration.json` |
+| [calibrage.py](calibrage.py) | Thin entry shim → `calibrage/` package |
+| [calibrage/](calibrage/) | Calibration package: `config`/`detection`/`device`/`ui`/`app` |
+| [tools/calibrage_selfcheck.py](tools/calibrage_selfcheck.py) | Headless verification gate (`ALL GREEN`) |
 | [Bitalino.py](Bitalino.py) | PLUX-API device wrapper |
 | [calibration.json](calibration.json) | Device address, port mapping, thresholds (generated by `calibrage.py`) |
 | [DOCUMENTATION.txt](DOCUMENTATION.txt) | French API docs for `tetris.py` and acquisition scripts |
