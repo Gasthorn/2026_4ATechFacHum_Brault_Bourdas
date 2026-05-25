@@ -460,14 +460,21 @@ class App:
                 rsd = _col_std(self.rest_samples, port)
                 fsd = max(env) if env else rsd
             else:
-                # EMG calibré EN DERNIER : PPG + axes accéléro déjà connus,
-                # on les exclut → le port EMG est isolé par élimination
-                # (capteur faible : on ne dépend plus de l'amplitude
-                # absolue). On confirme par l'enveloppe qui OSCILLE au
-                # rythme contracté/relâché.
+                # EMG calibré : PPG + axes accéléro connus. Pré-détecter
+                # l'EDA depuis rest_samples (signal continu/drifting dès le
+                # repos) pour l'EXCLURE des candidats EMG — sans ça, la
+                # dérive tonique EDA peut gagner le ratio de modulation et
+                # voler le port à un EMG faible. Si EDA absent/plat → pré-
+                # détection nulle, comportement antérieur conservé.
+                excl = list(self._ppg_excl(self.x_axis, self.y_axis, self.z_axis))
+                eda_pre = detect_eda_port(self.rest_samples, tuple(excl))
+                if eda_pre is not None and eda_pre not in excl:
+                    excl.append(eda_pre)
+                    self._auto_ports["eda"] = eda_pre
+                    self._log(f"EDA PRÉ-DÉTECTÉ → PORT {eda_pre + 1} "
+                              f"(exclu de la recherche EMG)")
                 port, rsd, fsd = detect_emg_port(
-                    self.rest_samples, self.emg_samples,
-                    self._ppg_excl(self.x_axis, self.y_axis, self.z_axis),
+                    self.rest_samples, self.emg_samples, tuple(excl),
                     self._rec_freq())
                 if port is None:
                     self._log("ERR: EMG NON DÉTECTÉ — ALTERNEZ FRANCHEMENT "
