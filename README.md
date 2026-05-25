@@ -45,7 +45,7 @@ BITALINO_MAC = "XX:XX:XX:XX:XX:XX"
 
 Depuis la racine du projet :
 ```bash
-python main.py
+python tetris.py
 ```
 
 ### Utilisation
