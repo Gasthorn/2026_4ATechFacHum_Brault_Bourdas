@@ -261,7 +261,7 @@ class App:
 
         recording = self.recording_until > 0 and time.time() < self.recording_until
         if self.state in (STATE_INTRO, STATE_REST, STATE_LR, STATE_UD,
-                          STATE_HR, STATE_EMG):
+                          STATE_HR, STATE_EMG, STATE_EDA):
             self.btn_main.enabled = not recording
             if self.btn_main.update(mouse, events):
                 self._on_main_button()
@@ -389,6 +389,10 @@ class App:
                                              frequency=self._rec_freq())
             self.ppg_port = port
             self.bpm_rest = bpm
+            # Mémoriser AUTO immédiatement : un cycle vers AUTO sur l'écran
+            # HR doit retrouver ce port (sinon ppg_port=None, badge BPM
+            # disparait, éditeur saute).
+            self._auto_ports["ppg"] = port
             if port is not None:
                 self._log(f"PPG (CŒUR) → PORT {port + 1}   "
                           f"BPM REPOS = {bpm}")
@@ -427,6 +431,7 @@ class App:
                 self.ppg_port = port
             self.bpm_rest = bpm
             self._bpm_live = bpm
+            self._auto_ports["ppg"] = self.ppg_port
             self._log(f"CŒUR CALIBRÉ → PORT {self.ppg_port + 1}   "
                       f"BPM REPOS = {bpm}")
             if self.recal_target == "ppg":   # fin de la tranche PPG
@@ -442,19 +447,34 @@ class App:
             if self._recording_failed(self.emg_samples,
                                       "[  RÉESSAYER L'ENREGISTREMENT  ]"):
                 return
-            # EMG calibré EN DERNIER : PPG + axes accéléro déjà connus, on
-            # les exclut → le port EMG est isolé par élimination (capteur
-            # faible : on ne dépend plus de l'amplitude absolue). On confirme
-            # par l'enveloppe qui OSCILLE au rythme contracté/relâché.
-            port, rsd, fsd = detect_emg_port(
-                self.rest_samples, self.emg_samples,
-                self._ppg_excl(self.x_axis, self.y_axis, self.z_axis),
-                self._rec_freq())
-            if port is None:
-                self._log("ERR: EMG NON DÉTECTÉ — ALTERNEZ FRANCHEMENT "
-                          "CONTRACTÉ/RELÂCHÉ, VÉRIFIER LES ÉLECTRODES")
-                self.btn_main.label = "[  RÉESSAYER L'ENREGISTREMENT  ]"
-                return
+            # Override manuel prioritaire : si l'utilisateur a forcé un port
+            # sur l'écran EMG, NE PAS lancer la détection auto (qui peut
+            # confondre EMG et EDA en captant la dérive lente d'EDA). On
+            # calcule σ_rest/σ_flex directement sur le port forcé.
+            ov_emg = self.port_override.get("emg")
+            if ov_emg is not None:
+                port = ov_emg
+                win = max(1, int(EMG_CYCLE_SECONDS * self._rec_freq() / 2))
+                from .detection import _emg_envelope
+                env = _emg_envelope(self.emg_samples, port, win)
+                rsd = _col_std(self.rest_samples, port)
+                fsd = max(env) if env else rsd
+            else:
+                # EMG calibré EN DERNIER : PPG + axes accéléro déjà connus,
+                # on les exclut → le port EMG est isolé par élimination
+                # (capteur faible : on ne dépend plus de l'amplitude
+                # absolue). On confirme par l'enveloppe qui OSCILLE au
+                # rythme contracté/relâché.
+                port, rsd, fsd = detect_emg_port(
+                    self.rest_samples, self.emg_samples,
+                    self._ppg_excl(self.x_axis, self.y_axis, self.z_axis),
+                    self._rec_freq())
+                if port is None:
+                    self._log("ERR: EMG NON DÉTECTÉ — ALTERNEZ FRANCHEMENT "
+                              "CONTRACTÉ/RELÂCHÉ, VÉRIFIER LES ÉLECTRODES "
+                              "OU FORCEZ LE PORT EMG VIA ◀▶")
+                    self.btn_main.label = "[  RÉESSAYER L'ENREGISTREMENT  ]"
+                    return
             self.emg_port      = port
             # σ BRUTES : le gain d'amplification est réglable en direct sur
             # la page zone morte (excursion live amplifiée vs seuil brut).
@@ -486,16 +506,24 @@ class App:
             if self._recording_failed(self.eda_samples,
                                       "[  RÉESSAYER L'ENREGISTREMENT  ]"):
                 return
-            # EDA calibré EN DERNIER : PPG + 3 axes + EMG connus et exclus →
-            # le port restant au SIGNAL CONTINU depuis le début est l'EDA.
-            port = detect_eda_port(
-                self.eda_samples,
-                self._ppg_excl(self.x_axis, self.y_axis, self.z_axis,
-                               self.emg_port))
-            if port is None:
-                self._log("ERR: EDA NON DÉTECTÉ — VÉRIFIER LES ÉLECTRODES")
-                self.btn_main.label = "[  RÉESSAYER L'ENREGISTREMENT  ]"
-                return
+            # Override manuel prioritaire : utilisateur peut forcer un port
+            # depuis l'écran EDA (◀▶) sans devoir passer la détection auto.
+            ov_eda = self.port_override.get("eda")
+            if ov_eda is not None:
+                port = ov_eda
+            else:
+                # EDA calibré EN DERNIER : PPG + 3 axes + EMG connus et
+                # exclus → le port restant au SIGNAL CONTINU depuis le
+                # début est l'EDA.
+                port = detect_eda_port(
+                    self.eda_samples,
+                    self._ppg_excl(self.x_axis, self.y_axis, self.z_axis,
+                                   self.emg_port))
+                if port is None:
+                    self._log("ERR: EDA NON DÉTECTÉ — VÉRIFIER LES "
+                              "ÉLECTRODES OU FORCEZ LE PORT EDA VIA ◀▶")
+                    self.btn_main.label = "[  RÉESSAYER L'ENREGISTREMENT  ]"
+                    return
             self.eda_port = port
             self.eda_rest = statistics.mean(s[port] for s in self.eda_samples)
             self._eda_live = self.eda_rest
@@ -516,6 +544,7 @@ class App:
                                         self._ppg_excl(self.emg_port))
             xs = [s[self.x_axis] for s in self.lr_samples]
             self.x_min, self.x_max = min(xs), max(xs)
+            self._auto_ports["x"] = self.x_axis
             self._log(f"X AXIS DETECTED → PORT {self.x_axis + 1}  "
                       f"[{self.x_min}..{self.x_max}]")
             self.state = STATE_UD
@@ -531,6 +560,8 @@ class App:
             self.z_axis = detect_z_axis(
                 self.rest_samples,
                 self._ppg_excl(self.emg_port, self.x_axis, self.y_axis))
+            self._auto_ports["y"] = self.y_axis
+            self._auto_ports["z"] = self.z_axis
             self._log(f"Y AXIS DETECTED → PORT {self.y_axis + 1}  "
                       f"[{self.y_min}..{self.y_max}]")
             if self.z_axis is not None:
@@ -1252,24 +1283,23 @@ class App:
         self.screen.set_clip(rect)
         self._panel_header(rect, _STEP_NO[state], title, accent, shape=shape,
                            subtitle=subtitle, sub2=sub2)
-        badge_y = None
+        # Rangée badge TOUJOURS réservée (même badge absent) : sinon
+        # l'éditeur de port saute de position quand le BPM/consigne
+        # apparaît/disparait (ex. cycle vers AUTO sans port détecté).
+        hx = rect.left + 30
+        hy = self._hdr_bottom + 6
+        badge_y = hy
+        bs = self.theme.f_big.get_height()
         if badge is not None:
             block_color, text, text_color, glow = badge
-            hx = rect.left + 30
-            hy = self._hdr_bottom + 6
-            badge_y = hy
-            bs = self.theme.f_big.get_height()
             draw_block(self.screen, pygame.Rect(hx, hy, bs, bs), block_color)
             draw_text(self.screen, self.theme.f_big, text,
                       (hx + bs + 14, hy - 2), color=text_color, glow=glow)
-            # Le badge (BPM cœur / consigne EMG) est une ligne SOUS l'en-tête :
-            # l'oscilloscope démarre à _hdr_bottom — il faut donc descendre
-            # _hdr_bottom sous le badge, sinon le scope le recouvre (visible
-            # surtout fenêtre élargie : badge masqué). Source : _scope_rect.
-            self._hdr_bottom = hy + bs + max(8, int(rect.height * 0.012))
+        # _hdr_bottom descend sous la rangée badge dans tous les cas :
+        # l'oscilloscope démarre à _hdr_bottom, sinon recouvrement.
+        self._hdr_bottom = hy + bs + max(8, int(rect.height * 0.012))
 
-        # Éditeur de port inline : aligné à droite sur la rangée du badge
-        # quand il y en a un (pas de rangée en plus), sinon rangée propre.
+        # Éditeur de port aligné à droite sur la rangée badge (toujours).
         self._draw_step_port_ctrl(rect, t, anchor_y=badge_y)
 
         axis_excl = self._ppg_excl(self.x_axis, self.y_axis, self.z_axis)
@@ -1568,7 +1598,8 @@ class App:
             else:
                 badge = (_darken(PHOSPHOR_MID, 0.35),
                          f"{cname}  {crem:.0f}s", PHOSPHOR_MID, PHOSPHOR_DIM)
-        elif self.emg_port is not None:
+        elif self.emg_port is not None and self.emg_flex > 0:
+            # Calibré pour de vrai (σ_flex>0) — pas seulement override port.
             sub = (f"Muscle calibré → P{self.emg_port + 1}. "
                    f"σ repos={self.emg_rest:.0f}  seuil={self.emg_threshold:.0f}.")
             active = sigma_now >= self.emg_threshold
@@ -1576,6 +1607,7 @@ class App:
             label  = f"{'CONTRACTÉ' if active else 'RELÂCHÉ'}  σ={sigma_now:.0f}"
             badge  = (scol, label, PHOSPHOR_MID, PHOSPHOR_DIM)
         else:
+            # Port override seul (sans σ) OU AUTO : message d'instruction.
             sub = (f"{EMG_SECONDS:.0f} s : le port dont l'activité OSCILLE au "
                    f"rythme contracté/relâché sera le capteur EMG.")
 
@@ -1606,7 +1638,7 @@ class App:
 
     def _draw_eda(self, t):
         eda_col = TETRO["O"]
-        if self.eda_port is not None:
+        if self.eda_port is not None and self.eda_rest > 0:
             sub = (f"EDA isolé → P{self.eda_port + 1}. "
                    f"Niveau de repos = {self.eda_rest:.0f}.")
         else:
@@ -1614,7 +1646,7 @@ class App:
                    f"CONTINU depuis le début sera l'EDA (par élimination).")
         lvl = self._live_eda()
         badge = None
-        if self.eda_port is not None:
+        if self.eda_port is not None and self.eda_rest > 0:
             badge = (eda_col, f"EDA {lvl:.0f}", eda_col,
                      _darken(eda_col, 0.5))
 

@@ -164,24 +164,28 @@ def detect_emg_port(rest_samples, flex_samples, exclude_ports,
 
     win = max(1, int(EMG_CYCLE_SECONDS * frequency / 2))  # demi-cycle
 
-    best_port, best_mod, rsd, fsd = None, 0.0, 0.0, 0.0
+    # Choisir par RATIO flex_mod / rest_mod (gain-invariant) plutôt que par
+    # mod absolu : un capteur EDA dérive lentement → mod absolu peut dominer
+    # un EMG faible alors que rest_mod ≈ flex_mod (ratio≈1). EMG vrai :
+    # rest_mod faible (relâché), flex_mod fort (bursts) → ratio >> 1.
+    best_port, best_ratio, best_mod = None, 0.0, 0.0
+    rsd = fsd = 0.0
     for port in candidates:
         env = _emg_envelope(flex_samples, port, win)
         if len(env) < 2:
             continue
-        mod = statistics.pstdev(env) * gain   # oscillation AMPLIFIÉE
-        if mod > best_mod:
-            best_mod, best_port = mod, port
-            rsd = _col_std(rest_samples, port)   # σ brut (live cohérent)
-            fsd = max(env)                       # σ pic brut
+        mod = statistics.pstdev(env) * gain
+        rest_env = _emg_envelope(rest_samples, port, win)
+        rest_mod = (statistics.pstdev(rest_env) * gain
+                    if len(rest_env) > 1 else 0.0)
+        ratio = mod / rest_mod if rest_mod > 1e-6 else (mod * 1e6)
+        if ratio > best_ratio and mod >= EMG_MIN_MOD:
+            best_ratio, best_mod, best_port = ratio, mod, port
+            rsd = _col_std(rest_samples, port)
+            fsd = max(env)
     if best_port is None:
         return None, 0.0, 0.0
-    # Tolérant : la modulation contracté/relâché doit nettement dépasser
-    # celle du repos (bruit) + un petit plancher absolu.
-    rest_env = _emg_envelope(rest_samples, best_port, win)
-    rest_mod = (statistics.pstdev(rest_env) * gain
-                if len(rest_env) > 1 else 0.0)
-    if best_mod < max(EMG_MIN_MOD, rest_mod * EMG_MIN_RATIO):
+    if best_ratio < EMG_MIN_RATIO:
         return None, rsd, fsd
     return best_port, rsd, fsd
 
