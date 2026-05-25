@@ -18,11 +18,12 @@ Ce projet consiste en une adaptation du jeu Tetris utilisant des données physio
 - BITalino
 - Capteur PPG
 - Capteur EDA
+- Capteur EMG
 - Ordinateur compatible Bluetooth
 
 ### Logiciel
 
-- Python 3.10
+- Python 3.13
 - pip
 
 ## Installation
