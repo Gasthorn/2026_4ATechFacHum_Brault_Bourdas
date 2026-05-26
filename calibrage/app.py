@@ -448,6 +448,7 @@ class App:
             self.bpm_rest = bpm
             self._bpm_live = bpm
             self._auto_ports["ppg"] = self.ppg_port
+            self.skipped["ppg"] = False
             self._log(f"CŒUR CALIBRÉ → PORT {self.ppg_port + 1}   "
                       f"BPM REPOS = {bpm}")
             if self.recal_target == "ppg":   # fin de la tranche PPG
@@ -499,6 +500,7 @@ class App:
                     self.btn_main.label = "[  RÉESSAYER L'ENREGISTREMENT  ]"
                     return
             self.emg_port      = port
+            self.skipped["emg"] = False
             # σ BRUTES : le gain d'amplification est réglable en direct sur
             # la page zone morte (excursion live amplifiée vs seuil brut).
             self.emg_rest      = rsd
@@ -548,6 +550,7 @@ class App:
                     self.btn_main.label = "[  RÉESSAYER L'ENREGISTREMENT  ]"
                     return
             self.eda_port = port
+            self.skipped["eda"] = False
             self.eda_rest = statistics.mean(s[port] for s in self.eda_samples)
             self._eda_live = self.eda_rest
             self._log(f"EDA CALIBRÉ → PORT {port + 1}   "
@@ -594,6 +597,8 @@ class App:
             self._auto_ports["x"] = self.x_axis
             self._auto_ports["y"] = self.y_axis
             self._auto_ports["z"] = self.z_axis
+            if x is not None or y is not None:
+                self.skipped["accel"] = False
             if x is not None:
                 self._log(f"X AXIS (JOINT)   → PORT {x + 1}  "
                           f"[{self.x_min}..{self.x_max}]")
@@ -668,6 +673,10 @@ class App:
         self.recal_checks     = {"ppg": False, "accel": False,
                                  "emg": False, "eda": False}
         self.recal_queue      = []
+        # Capteurs sautés (bouton PASSER) ; sérialisés dans calibration.json
+        # → runtime simule ces capteurs (signal démo) au lieu de planter.
+        self.skipped = {"ppg": False, "accel": False,
+                        "emg": False, "eda": False}
         self.x_min  = self.x_max  = 0
         self.y_min  = self.y_max  = 0
 
@@ -778,6 +787,7 @@ class App:
             self.ppg_port = None
             self.bpm_rest = 0
             self._bpm_live = 0
+            self.skipped["ppg"] = True
             self._log("CŒUR IGNORÉ — calibrage du capteur cardiaque sauté")
             if self.recal_target == "ppg":
                 if self.recal_queue:
@@ -792,6 +802,7 @@ class App:
             self.x_axis = self.y_axis = self.z_axis = None
             self.x_min = self.x_max = 0
             self.y_min = self.y_max = 0
+            self.skipped["accel"] = True
             self._log("ACCÉLÉRO IGNORÉ — balayages G/D + H/B sautés")
             if self.recal_target == "accel":
                 if self.recal_queue:
@@ -807,6 +818,7 @@ class App:
             self.emg_rest = self.emg_flex = 0.0
             self.emg_threshold = 0.0
             self._emg_live = 0.0
+            self.skipped["emg"] = True
             self._log("EMG IGNORÉ — calibrage musculaire sauté")
             if self.recal_target == "emg":
                 if self.recal_queue:
@@ -821,6 +833,7 @@ class App:
             self.eda_port = None
             self.eda_rest = 0.0
             self._eda_live = 0.0
+            self.skipped["eda"] = True
             self._log("EDA IGNORÉ — calibrage électrodermal sauté")
             if self.recal_queue:
                 self.recal_queue.pop(0)
@@ -832,6 +845,33 @@ class App:
         z_rest = (self._axis_rest_mean(self.z_axis)
                   if self.z_axis is not None else 512)
         emg_thr = round(self._apply_emg_threshold(), 2)
+        # Plage accéléro robuste : englobe le bruit de repos + plancher mini
+        # → au démarrage du jeu (axe immobile), x_norm reste bien sous la
+        # dead-zone même si le balayage a été asymétrique. Sans ça, un
+        # balayage faible d'un côté donne un span minuscule et le moindre
+        # bruit ADC dépasse la dead-zone → pièce gauche/droite parasite.
+        _MIN_HALF = 100   # ADC mini de chaque côté du repos
+        x_min_i = int(self.x_min) if self.x_min else int(x_rest)
+        x_max_i = int(self.x_max) if self.x_max else int(x_rest)
+        y_min_i = int(self.y_min) if self.y_min else int(y_rest)
+        y_max_i = int(self.y_max) if self.y_max else int(y_rest)
+        if self.x_axis is not None:
+            # Inclut aussi l'enveloppe du bruit de repos sur cet axe.
+            if self.rest_samples:
+                rs = [s[self.x_axis] for s in self.rest_samples]
+                x_min_i = min(x_min_i, min(rs))
+                x_max_i = max(x_max_i, max(rs))
+            half = max(int(x_rest) - x_min_i, x_max_i - int(x_rest), _MIN_HALF)
+            x_min_i = int(x_rest) - half
+            x_max_i = int(x_rest) + half
+        if self.y_axis is not None:
+            if self.rest_samples:
+                rs = [s[self.y_axis] for s in self.rest_samples]
+                y_min_i = min(y_min_i, min(rs))
+                y_max_i = max(y_max_i, max(rs))
+            half = max(int(y_rest) - y_min_i, y_max_i - int(y_rest), _MIN_HALF)
+            y_min_i = int(y_rest) - half
+            y_max_i = int(y_rest) + half
         calib = {
             "address":   self.address if not self._demo else "SIMULATED",
             "frequency": SAMPLING_HZ,
@@ -845,8 +885,8 @@ class App:
                     else int(self.port_override[k] + 1))
                 for k in self._port_keys},
             "rest":  {"x": x_rest, "y": y_rest, "z": z_rest},
-            "range": {"x_min": int(self.x_min), "x_max": int(self.x_max),
-                      "y_min": int(self.y_min), "y_max": int(self.y_max)},
+            "range": {"x_min": x_min_i, "x_max": x_max_i,
+                      "y_min": y_min_i, "y_max": y_max_i},
             "dead_zone": round(self.slider.value, 3),
             "invert": {"x": bool(self.invert_x), "y": bool(self.invert_y)},
             "ppg": {
@@ -865,6 +905,12 @@ class App:
                 "port": int(self.eda_port + 1) if self.eda_port is not None else None,
                 "rest": round(self.eda_rest, 2),
             },
+            # Capteurs sautés volontairement pendant la calibration. Le
+            # runtime simule un signal pour chacun (démo) et le jeu reste
+            # jouable avec les capteurs effectivement calibrés. Recharger ce
+            # JSON reproduit exactement la même configuration.
+            "skipped": {k: bool(self.skipped.get(k, False))
+                        for k in ("ppg", "accel", "emg", "eda")},
             "mapping": {
                 "left":  "x < x_rest - dead_zone * (x_rest - x_min)",
                 "right": "x > x_rest + dead_zone * (x_max - x_rest)",

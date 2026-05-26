@@ -30,16 +30,17 @@ def main():
 
     # ── BioState + modulator
     dev = SimulatedDevice()
+    # Ports BASE 1 (cohérent avec calibration.json réel : `int(x_axis+1)`).
     calib = {
-        "ports": {"x": 0, "y": 1, "z": 2},
+        "ports": {"x": 1, "y": 2, "z": 3},
         "rest": {"x": 512, "y": 512},
         "range": {"x_min": 200, "x_max": 820, "y_min": 200, "y_max": 820},
         "dead_zone": 0.4,
         "invert": {"x": False, "y": False},
-        "ppg": {"port": 3, "bpm_rest": 70},
-        "emg": {"port": 4, "sigma_rest": 5.0, "sigma_flex": 60.0,
+        "ppg": {"port": 4, "bpm_rest": 70},
+        "emg": {"port": 5, "sigma_rest": 5.0, "sigma_flex": 60.0,
                 "threshold": 25.0, "gain": 1.0, "dead_zone": 0.35},
-        "eda": {"port": 5, "rest": 500},
+        "eda": {"port": 6, "rest": 500},
     }
     bio = rt.BioState(dev, calib)
     snap0 = bio.snapshot()
@@ -64,26 +65,38 @@ def main():
     # Après le lockout, mais axe encore proche de la zone morte → toujours 0.
     handler._lockout_until = 0
     assert handler.get_move() == 0, "rebond marginal non filtré"
-    # Retour au neutre franc puis vraie inclinaison droite → +1
+    # Retour au neutre : maintenir l'axe au repos pendant ≥ SETTLE_S pour
+    # confirmer le latch was_settled, puis vraie inclinaison droite → +1.
     with bio._lock:
         bio.x_norm = 0.05
-    handler.get_move()
+    t0 = time.time()
+    while time.time() - t0 < handler.SETTLE_S + 0.05:
+        handler.get_move()
+        time.sleep(0.01)
     with bio._lock:
         bio.x_norm = 0.9
     assert handler.get_move() == +1
 
-    # ── EMG : action_rotate sur le FRONT MONTANT seulement
-    handler._last_emg_active = False
+    # ── EMG : rotation après ≥ EMG_HOLD_SEC de contraction soutenue.
+    bio._emg_hold_since = 0.0
+    bio._emg_hold_fired = False
     with bio._lock:
         bio.emg_active_raw = True
-    assert handler.action_rotate() is True   # front montant
-    assert handler.action_rotate() is False  # toujours actif → pas de re-trigger
+    # Trop tôt : contraction en cours mais < 0.5 s écoulées → pas de rotation.
+    assert handler.action_rotate() is False
+    # Forcer le timer dans le passé pour franchir le seuil de 0.5 s.
+    bio._emg_hold_since = time.time() - (bio.EMG_HOLD_SEC + 0.05)
+    assert handler.action_rotate() is True   # seuil franchi → rotation
+    assert handler.action_rotate() is False  # déjà déclenché ce maintien
     with bio._lock:
         bio.emg_active_raw = False
     assert handler.action_rotate() is False
+    # Nouveau cycle : ré-active + force seuil franchi → rotation à nouveau.
     with bio._lock:
         bio.emg_active_raw = True
-    assert handler.action_rotate() is True   # second front montant
+    bio._emg_hold_since = time.time() - (bio.EMG_HOLD_SEC + 0.05)
+    bio._emg_hold_fired = False
+    assert handler.action_rotate() is True
 
     # ── KeyboardInputHandler basique
     kb = rt.KeyboardInputHandler()

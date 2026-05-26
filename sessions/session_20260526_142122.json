@@ -1,0 +1,3975 @@
+{
+  "started_at": "2026-05-26T14:19:58.755072",
+  "ended_at": "2026-05-26T14:21:22.188999",
+  "duration_sec": 83.43,
+  "mode": "Capteurs",
+  "score": 0,
+  "lines": 0,
+  "level": 1,
+  "stress": {
+    "mean": 0.002,
+    "max": 0.161,
+    "min": 0.0,
+    "time_above_0.5_sec": 0.0,
+    "time_above_0.8_sec": 0.0
+  },
+  "bpm": {
+    "rest": 78,
+    "mean": 73.9,
+    "max": 83.7,
+    "min": 65.0
+  },
+  "eda": {
+    "rest": 4.06,
+    "mean": 3.8,
+    "max": 4.9,
+    "min": 2.8
+  },
+  "speed_factor": {
+    "mean": 1.0,
+    "min": 0.89
+  },
+  "samples": 394,
+  "history": [
+    {
+      "t": 0.22,
+      "bpm": 73.1,
+      "eda": 3.4,
+      "emg": 0.25,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 0.43,
+      "bpm": 73.0,
+      "eda": 3.6,
+      "emg": 0.25,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 0.64,
+      "bpm": 73.5,
+      "eda": 3.8,
+      "emg": 0.08,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 0.86,
+      "bpm": 74.0,
+      "eda": 3.5,
+      "emg": 0.33,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 1.06,
+      "bpm": 74.0,
+      "eda": 3.5,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 1.28,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 1.49,
+      "bpm": 75.2,
+      "eda": 3.6,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 1.69,
+      "bpm": 76.0,
+      "eda": 3.5,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 1.91,
+      "bpm": 76.0,
+      "eda": 3.8,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 2.11,
+      "bpm": 76.0,
+      "eda": 3.9,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 2.31,
+      "bpm": 75.9,
+      "eda": 3.5,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 2.53,
+      "bpm": 77.0,
+      "eda": 3.4,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 2.73,
+      "bpm": 77.0,
+      "eda": 3.8,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 2.93,
+      "bpm": 77.0,
+      "eda": 4.0,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 3.13,
+      "bpm": 75.2,
+      "eda": 3.5,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 3.35,
+      "bpm": 76.9,
+      "eda": 3.3,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 3.55,
+      "bpm": 77.0,
+      "eda": 3.6,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 3.76,
+      "bpm": 77.0,
+      "eda": 3.9,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 3.96,
+      "bpm": 75.5,
+      "eda": 3.6,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 4.18,
+      "bpm": 76.0,
+      "eda": 3.2,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 4.39,
+      "bpm": 76.0,
+      "eda": 3.3,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 4.59,
+      "bpm": 76.0,
+      "eda": 3.7,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 4.81,
+      "bpm": 75.2,
+      "eda": 3.6,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 5.01,
+      "bpm": 75.0,
+      "eda": 3.2,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 5.22,
+      "bpm": 75.0,
+      "eda": 3.1,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.006,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 5.44,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 5.64,
+      "bpm": 73.7,
+      "eda": 3.5,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 5.85,
+      "bpm": 73.0,
+      "eda": 3.3,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 6.07,
+      "bpm": 73.0,
+      "eda": 3.5,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 6.27,
+      "bpm": 73.0,
+      "eda": 3.9,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 6.49,
+      "bpm": 72.0,
+      "eda": 3.6,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 6.7,
+      "bpm": 72.0,
+      "eda": 3.4,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 6.91,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 7.12,
+      "bpm": 71.2,
+      "eda": 4.0,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 7.33,
+      "bpm": 71.0,
+      "eda": 3.6,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 7.54,
+      "bpm": 71.0,
+      "eda": 3.5,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 7.74,
+      "bpm": 71.0,
+      "eda": 3.8,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 7.96,
+      "bpm": 71.0,
+      "eda": 4.0,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 8.16,
+      "bpm": 71.0,
+      "eda": 3.7,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 8.36,
+      "bpm": 71.0,
+      "eda": 3.6,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 8.58,
+      "bpm": 71.0,
+      "eda": 3.8,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 8.79,
+      "bpm": 71.8,
+      "eda": 3.9,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 9.01,
+      "bpm": 72.9,
+      "eda": 3.6,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 9.22,
+      "bpm": 73.0,
+      "eda": 3.5,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 9.43,
+      "bpm": 73.0,
+      "eda": 3.8,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 9.65,
+      "bpm": 73.0,
+      "eda": 3.8,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 9.85,
+      "bpm": 73.0,
+      "eda": 3.4,
+      "emg": 0.4,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 10.06,
+      "bpm": 73.0,
+      "eda": 3.2,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 10.28,
+      "bpm": 73.0,
+      "eda": 3.7,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 10.48,
+      "bpm": 73.0,
+      "eda": 3.8,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 10.69,
+      "bpm": 72.1,
+      "eda": 3.4,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 10.89,
+      "bpm": 72.0,
+      "eda": 3.0,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.006,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 11.11,
+      "bpm": 72.0,
+      "eda": 3.3,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 11.32,
+      "bpm": 72.0,
+      "eda": 3.8,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 11.54,
+      "bpm": 71.2,
+      "eda": 3.6,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 11.74,
+      "bpm": 71.0,
+      "eda": 3.4,
+      "emg": 0.4,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 11.96,
+      "bpm": 71.0,
+      "eda": 3.5,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 12.16,
+      "bpm": 70.8,
+      "eda": 3.9,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 12.37,
+      "bpm": 71.0,
+      "eda": 3.9,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 12.59,
+      "bpm": 70.0,
+      "eda": 3.5,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 12.8,
+      "bpm": 70.0,
+      "eda": 3.5,
+      "emg": 0.33,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 13.01,
+      "bpm": 69.1,
+      "eda": 3.9,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 13.23,
+      "bpm": 69.0,
+      "eda": 3.9,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 13.44,
+      "bpm": 68.1,
+      "eda": 3.5,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 13.66,
+      "bpm": 68.0,
+      "eda": 3.1,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 13.87,
+      "bpm": 67.1,
+      "eda": 3.4,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 14.08,
+      "bpm": 67.0,
+      "eda": 3.8,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 14.29,
+      "bpm": 66.5,
+      "eda": 3.7,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 14.5,
+      "bpm": 66.5,
+      "eda": 3.2,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 14.7,
+      "bpm": 65.1,
+      "eda": 3.1,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.006,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 14.92,
+      "bpm": 65.0,
+      "eda": 3.6,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 15.13,
+      "bpm": 65.0,
+      "eda": 3.8,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 15.35,
+      "bpm": 65.0,
+      "eda": 3.4,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 15.56,
+      "bpm": 65.0,
+      "eda": 3.3,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 15.76,
+      "bpm": 65.0,
+      "eda": 3.8,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 15.98,
+      "bpm": 65.0,
+      "eda": 3.9,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 16.19,
+      "bpm": 65.0,
+      "eda": 3.5,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 16.4,
+      "bpm": 66.0,
+      "eda": 3.2,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 16.62,
+      "bpm": 66.0,
+      "eda": 3.6,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 16.83,
+      "bpm": 66.5,
+      "eda": 3.7,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 17.05,
+      "bpm": 67.0,
+      "eda": 3.3,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 17.25,
+      "bpm": 67.0,
+      "eda": 3.2,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 17.46,
+      "bpm": 67.0,
+      "eda": 3.7,
+      "emg": 0.4,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 17.67,
+      "bpm": 68.0,
+      "eda": 3.7,
+      "emg": 0.25,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 17.89,
+      "bpm": 69.0,
+      "eda": 3.3,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 18.1,
+      "bpm": 69.0,
+      "eda": 3.3,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 18.32,
+      "bpm": 69.0,
+      "eda": 3.8,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 18.53,
+      "bpm": 69.0,
+      "eda": 3.6,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 18.75,
+      "bpm": 69.0,
+      "eda": 3.3,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 18.95,
+      "bpm": 69.0,
+      "eda": 3.3,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 19.16,
+      "bpm": 70.9,
+      "eda": 3.8,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 19.38,
+      "bpm": 70.3,
+      "eda": 3.8,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 19.58,
+      "bpm": 70.0,
+      "eda": 3.3,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 19.79,
+      "bpm": 70.0,
+      "eda": 3.3,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 20.0,
+      "bpm": 70.8,
+      "eda": 3.8,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 20.22,
+      "bpm": 71.0,
+      "eda": 3.9,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 20.44,
+      "bpm": 71.0,
+      "eda": 3.4,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 20.65,
+      "bpm": 71.0,
+      "eda": 3.3,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 20.86,
+      "bpm": 71.0,
+      "eda": 3.8,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 21.08,
+      "bpm": 71.3,
+      "eda": 3.8,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 21.3,
+      "bpm": 72.0,
+      "eda": 3.4,
+      "emg": 0.47,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 21.51,
+      "bpm": 72.0,
+      "eda": 3.4,
+      "emg": 0.59,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 21.72,
+      "bpm": 71.7,
+      "eda": 3.9,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 21.94,
+      "bpm": 71.9,
+      "eda": 3.5,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 22.16,
+      "bpm": 72.0,
+      "eda": 3.3,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 22.37,
+      "bpm": 72.0,
+      "eda": 3.5,
+      "emg": 2.48,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 22.57,
+      "bpm": 71.7,
+      "eda": 4.0,
+      "emg": 5.78,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 22.77,
+      "bpm": 71.0,
+      "eda": 3.9,
+      "emg": 7.91,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 22.98,
+      "bpm": 71.0,
+      "eda": 3.7,
+      "emg": 9.22,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 23.2,
+      "bpm": 71.0,
+      "eda": 3.8,
+      "emg": 9.22,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 23.42,
+      "bpm": 71.7,
+      "eda": 4.0,
+      "emg": 8.7,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 23.63,
+      "bpm": 71.1,
+      "eda": 3.7,
+      "emg": 6.84,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 23.85,
+      "bpm": 71.0,
+      "eda": 3.4,
+      "emg": 6.85,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 24.06,
+      "bpm": 71.0,
+      "eda": 3.7,
+      "emg": 8.1,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 24.28,
+      "bpm": 71.8,
+      "eda": 4.0,
+      "emg": 9.64,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 24.49,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 9.64,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 24.69,
+      "bpm": 72.0,
+      "eda": 3.5,
+      "emg": 9.48,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 24.91,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 6.69,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 25.12,
+      "bpm": 71.8,
+      "eda": 3.9,
+      "emg": 2.39,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 25.34,
+      "bpm": 73.0,
+      "eda": 3.5,
+      "emg": 4.52,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 25.55,
+      "bpm": 73.0,
+      "eda": 3.5,
+      "emg": 10.73,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 25.75,
+      "bpm": 73.0,
+      "eda": 3.9,
+      "emg": 12.77,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 25.97,
+      "bpm": 73.0,
+      "eda": 4.1,
+      "emg": 13.0,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 26.18,
+      "bpm": 73.0,
+      "eda": 4.0,
+      "emg": 12.99,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 26.38,
+      "bpm": 73.0,
+      "eda": 4.0,
+      "emg": 11.26,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 26.59,
+      "bpm": 73.0,
+      "eda": 4.4,
+      "emg": 6.72,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 26.81,
+      "bpm": 73.8,
+      "eda": 4.2,
+      "emg": 1.65,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 27.02,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 8.7,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 27.24,
+      "bpm": 74.0,
+      "eda": 4.0,
+      "emg": 12.83,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 27.44,
+      "bpm": 74.0,
+      "eda": 4.5,
+      "emg": 13.83,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 27.65,
+      "bpm": 73.2,
+      "eda": 4.3,
+      "emg": 13.85,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 27.87,
+      "bpm": 73.0,
+      "eda": 3.9,
+      "emg": 13.68,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 28.08,
+      "bpm": 73.0,
+      "eda": 3.9,
+      "emg": 9.42,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 28.29,
+      "bpm": 73.0,
+      "eda": 4.0,
+      "emg": 4.61,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 28.51,
+      "bpm": 73.9,
+      "eda": 3.7,
+      "emg": 1.43,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 28.72,
+      "bpm": 74.0,
+      "eda": 3.6,
+      "emg": 1.37,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 28.94,
+      "bpm": 74.0,
+      "eda": 3.8,
+      "emg": 1.25,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 29.15,
+      "bpm": 74.3,
+      "eda": 3.9,
+      "emg": 1.2,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 29.37,
+      "bpm": 75.9,
+      "eda": 3.7,
+      "emg": 1.32,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 29.58,
+      "bpm": 76.0,
+      "eda": 3.8,
+      "emg": 1.26,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 29.79,
+      "bpm": 76.0,
+      "eda": 4.2,
+      "emg": 1.29,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 30.01,
+      "bpm": 77.0,
+      "eda": 4.0,
+      "emg": 1.34,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 30.22,
+      "bpm": 77.0,
+      "eda": 3.8,
+      "emg": 1.29,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 30.43,
+      "bpm": 77.0,
+      "eda": 3.9,
+      "emg": 1.26,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 30.65,
+      "bpm": 77.8,
+      "eda": 3.8,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 30.86,
+      "bpm": 79.2,
+      "eda": 3.7,
+      "emg": 1.1,
+      "stress": 0.003,
+      "factor": 0.996,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 31.07,
+      "bpm": 81.9,
+      "eda": 3.8,
+      "emg": 1.17,
+      "stress": 0.101,
+      "factor": 0.929,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 31.28,
+      "bpm": 78.2,
+      "eda": 3.9,
+      "emg": 1.14,
+      "stress": 0.018,
+      "factor": 0.988,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 31.49,
+      "bpm": 78.9,
+      "eda": 3.7,
+      "emg": 1.02,
+      "stress": 0.024,
+      "factor": 0.983,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 31.71,
+      "bpm": 79.0,
+      "eda": 3.7,
+      "emg": 0.98,
+      "stress": 0.028,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 31.92,
+      "bpm": 79.0,
+      "eda": 3.9,
+      "emg": 1.02,
+      "stress": 0.029,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 32.12,
+      "bpm": 79.0,
+      "eda": 3.8,
+      "emg": 1.1,
+      "stress": 0.029,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 32.32,
+      "bpm": 79.0,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.029,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 32.54,
+      "bpm": 83.7,
+      "eda": 3.7,
+      "emg": 1.17,
+      "stress": 0.14,
+      "factor": 0.901,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 32.75,
+      "bpm": 82.4,
+      "eda": 4.0,
+      "emg": 1.2,
+      "stress": 0.161,
+      "factor": 0.89,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 32.96,
+      "bpm": 79.3,
+      "eda": 3.8,
+      "emg": 1.29,
+      "stress": 0.049,
+      "factor": 0.966,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 33.18,
+      "bpm": 79.0,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.03,
+      "factor": 0.979,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 33.39,
+      "bpm": 79.9,
+      "eda": 3.8,
+      "emg": 1.17,
+      "stress": 0.047,
+      "factor": 0.967,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 33.59,
+      "bpm": 80.0,
+      "eda": 4.0,
+      "emg": 1.23,
+      "stress": 0.057,
+      "factor": 0.96,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 33.79,
+      "bpm": 79.1,
+      "eda": 3.7,
+      "emg": 1.26,
+      "stress": 0.036,
+      "factor": 0.975,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 34.01,
+      "bpm": 79.0,
+      "eda": 3.6,
+      "emg": 1.17,
+      "stress": 0.029,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 34.22,
+      "bpm": 79.0,
+      "eda": 3.8,
+      "emg": 1.17,
+      "stress": 0.029,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 34.43,
+      "bpm": 79.0,
+      "eda": 4.0,
+      "emg": 1.14,
+      "stress": 0.029,
+      "factor": 0.98,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 34.65,
+      "bpm": 78.1,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.006,
+      "factor": 0.996,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 34.86,
+      "bpm": 78.0,
+      "eda": 3.6,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 35.08,
+      "bpm": 78.0,
+      "eda": 3.9,
+      "emg": 1.26,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 35.29,
+      "bpm": 78.0,
+      "eda": 4.0,
+      "emg": 1.32,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 35.51,
+      "bpm": 77.0,
+      "eda": 3.7,
+      "emg": 1.34,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 35.72,
+      "bpm": 76.0,
+      "eda": 3.7,
+      "emg": 1.29,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 35.94,
+      "bpm": 76.0,
+      "eda": 3.9,
+      "emg": 1.32,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 36.15,
+      "bpm": 76.0,
+      "eda": 4.0,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 36.37,
+      "bpm": 74.1,
+      "eda": 3.7,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 36.59,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 36.8,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 37.01,
+      "bpm": 74.0,
+      "eda": 3.8,
+      "emg": 1.2,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 37.21,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 37.43,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 37.64,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 37.86,
+      "bpm": 74.8,
+      "eda": 3.7,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 38.07,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 38.27,
+      "bpm": 75.0,
+      "eda": 3.8,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 38.48,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 1.34,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 38.68,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 1.26,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 38.9,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 39.11,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 39.33,
+      "bpm": 74.7,
+      "eda": 3.8,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 39.54,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 39.76,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 39.96,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 40.17,
+      "bpm": 74.8,
+      "eda": 3.8,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 40.37,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 40.59,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 40.8,
+      "bpm": 75.0,
+      "eda": 4.0,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 41.02,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 41.23,
+      "bpm": 76.0,
+      "eda": 3.8,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 41.45,
+      "bpm": 76.0,
+      "eda": 4.3,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 41.66,
+      "bpm": 76.0,
+      "eda": 4.6,
+      "emg": 1.17,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 41.87,
+      "bpm": 75.1,
+      "eda": 4.4,
+      "emg": 1.1,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 42.08,
+      "bpm": 75.0,
+      "eda": 4.1,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 42.28,
+      "bpm": 75.0,
+      "eda": 4.2,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 42.5,
+      "bpm": 75.0,
+      "eda": 4.3,
+      "emg": 1.06,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 42.71,
+      "bpm": 74.1,
+      "eda": 3.9,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 42.91,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 43.13,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 43.34,
+      "bpm": 74.0,
+      "eda": 4.1,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 43.56,
+      "bpm": 73.1,
+      "eda": 3.8,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 43.76,
+      "bpm": 73.0,
+      "eda": 3.6,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 43.97,
+      "bpm": 73.0,
+      "eda": 3.7,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 44.18,
+      "bpm": 73.0,
+      "eda": 4.0,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 44.39,
+      "bpm": 72.0,
+      "eda": 3.8,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 44.6,
+      "bpm": 72.0,
+      "eda": 3.6,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 44.81,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 45.01,
+      "bpm": 71.6,
+      "eda": 4.0,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 45.21,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 45.43,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 45.64,
+      "bpm": 72.0,
+      "eda": 4.1,
+      "emg": 0.53,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 45.86,
+      "bpm": 72.0,
+      "eda": 4.6,
+      "emg": 0.7,
+      "stress": 0.002,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 46.08,
+      "bpm": 72.0,
+      "eda": 4.3,
+      "emg": 0.76,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 46.29,
+      "bpm": 72.0,
+      "eda": 4.2,
+      "emg": 0.9,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 46.5,
+      "bpm": 72.0,
+      "eda": 4.8,
+      "emg": 0.81,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 46.72,
+      "bpm": 72.8,
+      "eda": 4.6,
+      "emg": 0.81,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 46.93,
+      "bpm": 73.0,
+      "eda": 4.1,
+      "emg": 0.85,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 47.15,
+      "bpm": 73.0,
+      "eda": 4.0,
+      "emg": 0.65,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 47.36,
+      "bpm": 73.0,
+      "eda": 4.4,
+      "emg": 0.4,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 47.56,
+      "bpm": 73.1,
+      "eda": 4.2,
+      "emg": 0.81,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 47.76,
+      "bpm": 73.0,
+      "eda": 3.8,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 47.98,
+      "bpm": 73.0,
+      "eda": 3.9,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 48.2,
+      "bpm": 73.0,
+      "eda": 4.3,
+      "emg": 0.9,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 48.41,
+      "bpm": 73.9,
+      "eda": 4.1,
+      "emg": 0.94,
+      "stress": 0.001,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 48.63,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 0.76,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 48.84,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 49.06,
+      "bpm": 74.3,
+      "eda": 4.1,
+      "emg": 0.7,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 49.27,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 49.49,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 49.7,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 49.91,
+      "bpm": 75.8,
+      "eda": 3.8,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 50.11,
+      "bpm": 75.9,
+      "eda": 3.6,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 50.33,
+      "bpm": 76.0,
+      "eda": 3.7,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 50.53,
+      "bpm": 76.0,
+      "eda": 3.9,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 50.74,
+      "bpm": 75.2,
+      "eda": 3.8,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 50.95,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 0.81,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 51.16,
+      "bpm": 75.0,
+      "eda": 4.0,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 51.36,
+      "bpm": 75.0,
+      "eda": 4.6,
+      "emg": 0.98,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 51.58,
+      "bpm": 75.0,
+      "eda": 4.5,
+      "emg": 0.94,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 51.79,
+      "bpm": 75.0,
+      "eda": 4.2,
+      "emg": 0.81,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 52.01,
+      "bpm": 75.0,
+      "eda": 4.4,
+      "emg": 0.9,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 52.22,
+      "bpm": 75.0,
+      "eda": 4.8,
+      "emg": 0.81,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 52.44,
+      "bpm": 75.0,
+      "eda": 4.4,
+      "emg": 0.9,
+      "stress": 0.002,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 52.64,
+      "bpm": 75.0,
+      "eda": 4.3,
+      "emg": 1.02,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 52.85,
+      "bpm": 75.0,
+      "eda": 4.7,
+      "emg": 0.98,
+      "stress": 0.002,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 53.07,
+      "bpm": 75.0,
+      "eda": 4.9,
+      "emg": 0.85,
+      "stress": 0.004,
+      "factor": 0.997,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 53.28,
+      "bpm": 75.7,
+      "eda": 4.4,
+      "emg": 0.98,
+      "stress": 0.002,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 53.49,
+      "bpm": 76.0,
+      "eda": 4.3,
+      "emg": 0.94,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 53.7,
+      "bpm": 76.0,
+      "eda": 4.7,
+      "emg": 0.94,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 53.91,
+      "bpm": 76.0,
+      "eda": 4.6,
+      "emg": 1.02,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 54.13,
+      "bpm": 75.1,
+      "eda": 4.1,
+      "emg": 0.85,
+      "stress": 0.001,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 54.34,
+      "bpm": 75.0,
+      "eda": 3.8,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 54.55,
+      "bpm": 75.0,
+      "eda": 4.1,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 54.76,
+      "bpm": 74.5,
+      "eda": 4.1,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 54.96,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 55.17,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 55.39,
+      "bpm": 74.0,
+      "eda": 4.0,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 55.6,
+      "bpm": 73.4,
+      "eda": 4.0,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 55.8,
+      "bpm": 72.1,
+      "eda": 3.7,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 56.02,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 56.22,
+      "bpm": 72.0,
+      "eda": 4.2,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 56.42,
+      "bpm": 72.0,
+      "eda": 4.6,
+      "emg": 0.98,
+      "stress": 0.002,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 56.63,
+      "bpm": 72.0,
+      "eda": 4.3,
+      "emg": 0.98,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 56.84,
+      "bpm": 72.0,
+      "eda": 4.0,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 57.06,
+      "bpm": 72.0,
+      "eda": 4.4,
+      "emg": 0.98,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 57.27,
+      "bpm": 72.0,
+      "eda": 4.4,
+      "emg": 1.02,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 57.49,
+      "bpm": 72.0,
+      "eda": 4.0,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 57.69,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 57.9,
+      "bpm": 72.0,
+      "eda": 4.0,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 58.12,
+      "bpm": 72.0,
+      "eda": 3.9,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 58.33,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 58.55,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 58.76,
+      "bpm": 72.0,
+      "eda": 4.1,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 58.98,
+      "bpm": 72.0,
+      "eda": 3.9,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 59.19,
+      "bpm": 72.0,
+      "eda": 3.6,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 59.4,
+      "bpm": 72.0,
+      "eda": 3.7,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 59.62,
+      "bpm": 72.5,
+      "eda": 4.0,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 59.83,
+      "bpm": 73.0,
+      "eda": 3.7,
+      "emg": 1.2,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 60.05,
+      "bpm": 73.0,
+      "eda": 3.6,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 60.26,
+      "bpm": 73.0,
+      "eda": 3.9,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 60.47,
+      "bpm": 72.8,
+      "eda": 4.0,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 60.68,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 60.9,
+      "bpm": 74.0,
+      "eda": 3.7,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 61.11,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 61.33,
+      "bpm": 74.3,
+      "eda": 3.8,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 61.54,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 61.75,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 61.97,
+      "bpm": 75.0,
+      "eda": 4.1,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 62.18,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 62.39,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 62.61,
+      "bpm": 75.0,
+      "eda": 4.0,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 62.82,
+      "bpm": 75.0,
+      "eda": 4.5,
+      "emg": 1.02,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 63.03,
+      "bpm": 75.0,
+      "eda": 4.2,
+      "emg": 1.2,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 63.23,
+      "bpm": 75.0,
+      "eda": 4.0,
+      "emg": 1.29,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 63.44,
+      "bpm": 75.0,
+      "eda": 4.4,
+      "emg": 1.32,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 63.66,
+      "bpm": 75.0,
+      "eda": 4.7,
+      "emg": 1.44,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 63.87,
+      "bpm": 74.9,
+      "eda": 4.3,
+      "emg": 1.52,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 64.07,
+      "bpm": 75.0,
+      "eda": 4.1,
+      "emg": 1.42,
+      "stress": 0.001,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 64.29,
+      "bpm": 75.0,
+      "eda": 4.6,
+      "emg": 1.34,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 64.5,
+      "bpm": 75.0,
+      "eda": 4.6,
+      "emg": 1.2,
+      "stress": 0.003,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 64.72,
+      "bpm": 75.0,
+      "eda": 4.1,
+      "emg": 1.1,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 64.93,
+      "bpm": 75.0,
+      "eda": 3.8,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 65.15,
+      "bpm": 75.0,
+      "eda": 4.3,
+      "emg": 0.94,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 65.36,
+      "bpm": 75.9,
+      "eda": 4.1,
+      "emg": 1.06,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 65.56,
+      "bpm": 76.0,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 65.78,
+      "bpm": 76.0,
+      "eda": 3.8,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 65.99,
+      "bpm": 76.0,
+      "eda": 4.1,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 66.21,
+      "bpm": 76.0,
+      "eda": 3.7,
+      "emg": 1.2,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 66.41,
+      "bpm": 76.0,
+      "eda": 3.5,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 66.62,
+      "bpm": 76.0,
+      "eda": 3.9,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 66.84,
+      "bpm": 76.0,
+      "eda": 4.0,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 67.04,
+      "bpm": 75.8,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 67.25,
+      "bpm": 76.0,
+      "eda": 3.5,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 67.47,
+      "bpm": 76.0,
+      "eda": 4.0,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 67.67,
+      "bpm": 75.5,
+      "eda": 4.1,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 67.88,
+      "bpm": 75.0,
+      "eda": 3.7,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 68.08,
+      "bpm": 75.0,
+      "eda": 3.6,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 68.3,
+      "bpm": 75.0,
+      "eda": 4.2,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 68.51,
+      "bpm": 75.0,
+      "eda": 4.3,
+      "emg": 0.98,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 68.73,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 68.94,
+      "bpm": 75.0,
+      "eda": 3.9,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 69.14,
+      "bpm": 75.0,
+      "eda": 4.4,
+      "emg": 1.06,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 69.34,
+      "bpm": 75.9,
+      "eda": 4.3,
+      "emg": 1.02,
+      "stress": 0.002,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 69.56,
+      "bpm": 76.0,
+      "eda": 4.1,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 69.77,
+      "bpm": 76.0,
+      "eda": 4.2,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 69.97,
+      "bpm": 76.0,
+      "eda": 4.6,
+      "emg": 1.26,
+      "stress": 0.002,
+      "factor": 0.998,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 70.18,
+      "bpm": 76.0,
+      "eda": 4.2,
+      "emg": 1.2,
+      "stress": 0.001,
+      "factor": 0.999,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 70.38,
+      "bpm": 76.0,
+      "eda": 3.8,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 70.6,
+      "bpm": 76.0,
+      "eda": 4.1,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 70.81,
+      "bpm": 76.0,
+      "eda": 4.1,
+      "emg": 1.17,
+      "stress": 0.001,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 71.03,
+      "bpm": 76.2,
+      "eda": 3.7,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 71.24,
+      "bpm": 76.0,
+      "eda": 3.6,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 71.45,
+      "bpm": 76.0,
+      "eda": 3.9,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 71.67,
+      "bpm": 76.0,
+      "eda": 3.7,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 71.88,
+      "bpm": 76.1,
+      "eda": 3.4,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 72.1,
+      "bpm": 76.0,
+      "eda": 3.6,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 72.31,
+      "bpm": 76.0,
+      "eda": 3.9,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 72.53,
+      "bpm": 75.1,
+      "eda": 3.6,
+      "emg": 1.17,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 72.73,
+      "bpm": 76.1,
+      "eda": 3.4,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 72.94,
+      "bpm": 76.0,
+      "eda": 3.6,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 73.16,
+      "bpm": 76.5,
+      "eda": 3.8,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 73.36,
+      "bpm": 77.0,
+      "eda": 3.5,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 73.57,
+      "bpm": 77.0,
+      "eda": 3.4,
+      "emg": 0.85,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 73.78,
+      "bpm": 77.0,
+      "eda": 3.8,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 74.0,
+      "bpm": 77.0,
+      "eda": 3.7,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 74.22,
+      "bpm": 77.3,
+      "eda": 3.5,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 74.43,
+      "bpm": 77.0,
+      "eda": 3.7,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 74.65,
+      "bpm": 77.0,
+      "eda": 3.9,
+      "emg": 0.9,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 74.86,
+      "bpm": 78.0,
+      "eda": 3.6,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 75.07,
+      "bpm": 77.2,
+      "eda": 3.5,
+      "emg": 0.94,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 75.29,
+      "bpm": 77.0,
+      "eda": 3.9,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 75.5,
+      "bpm": 77.0,
+      "eda": 3.8,
+      "emg": 1.02,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 75.72,
+      "bpm": 77.0,
+      "eda": 3.5,
+      "emg": 0.98,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 75.93,
+      "bpm": 77.0,
+      "eda": 3.6,
+      "emg": 1.06,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 76.13,
+      "bpm": 77.0,
+      "eda": 3.9,
+      "emg": 1.14,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 76.35,
+      "bpm": 77.0,
+      "eda": 3.6,
+      "emg": 1.23,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 76.56,
+      "bpm": 76.9,
+      "eda": 3.4,
+      "emg": 1.26,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 76.76,
+      "bpm": 77.0,
+      "eda": 3.5,
+      "emg": 1.32,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 76.98,
+      "bpm": 77.0,
+      "eda": 3.9,
+      "emg": 1.29,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 77.19,
+      "bpm": 77.0,
+      "eda": 3.4,
+      "emg": 1.26,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 77.39,
+      "bpm": 77.8,
+      "eda": 3.1,
+      "emg": 1.2,
+      "stress": 0.0,
+      "factor": 1.006,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 77.6,
+      "bpm": 78.0,
+      "eda": 3.4,
+      "emg": 8.51,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 77.81,
+      "bpm": 78.0,
+      "eda": 3.7,
+      "emg": 17.12,
+      "stress": 0.0,
+      "factor": 1.0,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 78.02,
+      "bpm": 76.2,
+      "eda": 3.6,
+      "emg": 19.21,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 78.24,
+      "bpm": 76.1,
+      "eda": 3.5,
+      "emg": 20.03,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 78.45,
+      "bpm": 76.0,
+      "eda": 3.8,
+      "emg": 21.9,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 78.65,
+      "bpm": 76.0,
+      "eda": 4.0,
+      "emg": 18.01,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 78.87,
+      "bpm": 74.7,
+      "eda": 3.7,
+      "emg": 13.85,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 79.08,
+      "bpm": 74.0,
+      "eda": 3.5,
+      "emg": 11.09,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 79.28,
+      "bpm": 74.0,
+      "eda": 3.6,
+      "emg": 10.0,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 79.48,
+      "bpm": 74.0,
+      "eda": 3.9,
+      "emg": 7.42,
+      "stress": 0.0,
+      "factor": 1.001,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 79.68,
+      "bpm": 73.9,
+      "eda": 3.6,
+      "emg": 12.42,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 79.89,
+      "bpm": 73.0,
+      "eda": 3.1,
+      "emg": 14.03,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 80.1,
+      "bpm": 73.1,
+      "eda": 3.1,
+      "emg": 15.81,
+      "stress": 0.0,
+      "factor": 1.007,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 80.31,
+      "bpm": 73.0,
+      "eda": 3.6,
+      "emg": 17.73,
+      "stress": 0.0,
+      "factor": 1.004,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 80.52,
+      "bpm": 72.0,
+      "eda": 3.5,
+      "emg": 18.36,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 80.74,
+      "bpm": 72.0,
+      "eda": 3.1,
+      "emg": 16.46,
+      "stress": 0.0,
+      "factor": 1.006,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 80.94,
+      "bpm": 72.0,
+      "eda": 3.2,
+      "emg": 14.92,
+      "stress": 0.0,
+      "factor": 1.006,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 81.15,
+      "bpm": 72.0,
+      "eda": 3.8,
+      "emg": 12.2,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 81.37,
+      "bpm": 72.9,
+      "eda": 3.7,
+      "emg": 7.56,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 81.58,
+      "bpm": 73.0,
+      "eda": 3.5,
+      "emg": 3.79,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 81.8,
+      "bpm": 73.0,
+      "eda": 3.7,
+      "emg": 1.1,
+      "stress": 0.0,
+      "factor": 1.002,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 82.01,
+      "bpm": 73.0,
+      "eda": 3.5,
+      "emg": 4.06,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 82.23,
+      "bpm": 73.0,
+      "eda": 3.3,
+      "emg": 8.58,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 82.43,
+      "bpm": 73.0,
+      "eda": 3.3,
+      "emg": 9.83,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 82.64,
+      "bpm": 73.0,
+      "eda": 3.6,
+      "emg": 12.03,
+      "stress": 0.0,
+      "factor": 1.003,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 82.86,
+      "bpm": 74.8,
+      "eda": 3.2,
+      "emg": 12.87,
+      "stress": 0.0,
+      "factor": 1.005,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 83.07,
+      "bpm": 75.0,
+      "eda": 2.8,
+      "emg": 12.57,
+      "stress": 0.0,
+      "factor": 1.007,
+      "score": 0,
+      "lines": 0
+    },
+    {
+      "t": 83.29,
+      "bpm": 75.0,
+      "eda": 2.9,
+      "emg": 12.23,
+      "stress": 0.0,
+      "factor": 1.007,
+      "score": 0,
+      "lines": 0
+    }
+  ]
+}
