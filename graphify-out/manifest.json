@@ -10,9 +10,9 @@
     "semantic_hash": "a0143350df472ecd6696e590f5c20371"
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\calibration.json": {
-    "mtime": 1779757471.2087111,
-    "ast_hash": "3ae86b18d8aed1b0f167de1be0743dd4",
-    "semantic_hash": "3ae86b18d8aed1b0f167de1be0743dd4"
+    "mtime": 1779800083.7547293,
+    "ast_hash": "961fa6be0adc096f641aa79d88abf05d",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\OneBITalinoAcquisitionExample.py": {
     "mtime": 1777910323.3654313,
@@ -20,14 +20,14 @@
     "semantic_hash": "f02409eaae407b67f77af6b4230ecb28"
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\runtime.py": {
-    "mtime": 1779750459.8865306,
-    "ast_hash": "402b074cf5b3b122295e281ae6156d7a",
-    "semantic_hash": "402b074cf5b3b122295e281ae6156d7a"
+    "mtime": 1779800058.1000016,
+    "ast_hash": "04e49816971120a3d2ee10e8c04ad07b",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\tetris.py": {
-    "mtime": 1779757464.411268,
-    "ast_hash": "96fba9e84cb9065828fbca3574a5ae2b",
-    "semantic_hash": "96fba9e84cb9065828fbca3574a5ae2b"
+    "mtime": 1779800075.7724195,
+    "ast_hash": "aede15904982db540d328be40e18f9ac",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\.claude\\settings.local.json": {
     "mtime": 1778182655.6025321,
@@ -125,14 +125,14 @@
     "semantic_hash": "5c459d1eb34b465447ea830342e2ce35"
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\tmp\\last-ndc.ts": {
-    "mtime": 1779757481.963377,
-    "ast_hash": "9dad78618fd5232d0b11f60cea50d842",
-    "semantic_hash": "9dad78618fd5232d0b11f60cea50d842"
+    "mtime": 1779796516.988561,
+    "ast_hash": "bb2e7a2bdafa933c7cb6aa6c010bf143",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\tmp\\last-save.json": {
-    "mtime": 1779758168.894779,
-    "ast_hash": "62cbeb115b20ac482218b5775a031fd8",
-    "semantic_hash": "62cbeb115b20ac482218b5775a031fd8"
+    "mtime": 1779799136.8505747,
+    "ast_hash": "2c5f7eda952029a7cadcf462a54efba3",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\.vscode\\settings.json": {
     "mtime": 1777909368.2771904,
@@ -140,9 +140,9 @@
     "semantic_hash": "a78585d3c5060ed8c3a39cc262bd1a29"
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\calibrage\\app.py": {
-    "mtime": 1779741810.568432,
-    "ast_hash": "503e4481e34c2316bcb88f6ec5dd84cc",
-    "semantic_hash": "503e4481e34c2316bcb88f6ec5dd84cc"
+    "mtime": 1779799445.7984385,
+    "ast_hash": "cf1c8286b49251d6c4685d3921ce1552",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\calibrage\\config.py": {
     "mtime": 1779120407.2228775,
@@ -200,14 +200,14 @@
     "semantic_hash": "3b2b87ccca7000d128e18cbaa905278d"
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\tools\\tetris_selfcheck.py": {
-    "mtime": 1779739266.9652002,
-    "ast_hash": "6dcc80d94826a72745076940e1185182",
-    "semantic_hash": "6dcc80d94826a72745076940e1185182"
+    "mtime": 1779797660.8666115,
+    "ast_hash": "9233f9b0bf07f3045e8ea8f1e80ccdd4",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\CLAUDE.md": {
-    "mtime": 1779743604.7311025,
-    "ast_hash": "c532f461c0366ae51f87566de6c9deee",
-    "semantic_hash": "c532f461c0366ae51f87566de6c9deee"
+    "mtime": 1779798642.609339,
+    "ast_hash": "8726d79eccc8ae8f8564f3938e98a2b8",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\DOCUMENTATION.txt": {
     "mtime": 1777969437.8141768,
@@ -230,18 +230,33 @@
     "semantic_hash": "2bf2b04880f1f5eab2c90823735723ec"
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\now.md": {
-    "mtime": 1779758168.7340367,
-    "ast_hash": "90477aac57fc3d27402913e311a43d1d",
-    "semantic_hash": "90477aac57fc3d27402913e311a43d1d"
-  },
-  "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\today-2026-05-25.md": {
-    "mtime": 1779742407.3375883,
-    "ast_hash": "ef2eb7f65572d8dd49d0af4912557926",
-    "semantic_hash": "ef2eb7f65572d8dd49d0af4912557926"
+    "mtime": 1779799136.611659,
+    "ast_hash": "b523abd3311bc68e9452b2aeb3598edd",
+    "semantic_hash": ""
   },
   "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\today-2026-05-26.md": {
-    "mtime": 1779757520.2390616,
-    "ast_hash": "e666a474aae775decd8a6f89b15b5d78",
-    "semantic_hash": "e666a474aae775decd8a6f89b15b5d78"
+    "mtime": 1779796544.8524396,
+    "ast_hash": "bc6307ff6df27064217ef2ada56b58f4",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\bidbi\\Documents\\TeTrino\\.claude\\settings.json": {
+    "mtime": 1779758961.8636584,
+    "ast_hash": "5d6ecd96cf065b16e8bb9fbf5d7d8f0d",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\archive.md": {
+    "mtime": 1779761563.751893,
+    "ast_hash": "afa6e717d956f4f23971000d799a74b6",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\recent.md": {
+    "mtime": 1779761563.7288902,
+    "ast_hash": "cc65811898c90c7d44b45e3a83738bee",
+    "semantic_hash": ""
+  },
+  "C:\\Users\\bidbi\\Documents\\TeTrino\\.remember\\today-2026-05-25.done.md": {
+    "mtime": 1779742407.3375883,
+    "ast_hash": "ef2eb7f65572d8dd49d0af4912557926",
+    "semantic_hash": ""
   }
 }

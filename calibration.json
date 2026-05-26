@@ -15,15 +15,15 @@
     "eda": 6
   },
   "rest": {
-    "x": 516.2576572071509,
-    "y": 404.5080635079385,
-    "z": 499.514814351794
+    "x": 511.85662545272885,
+    "y": 403.8781066566754,
+    "z": 501.2527788185338
   },
   "range": {
-    "x_min": 11,
-    "x_max": 1021,
-    "y_min": -65,
-    "y_max": 873
+    "x_min": 13,
+    "x_max": 1009,
+    "y_min": -66,
+    "y_max": 872
   },
   "dead_zone": 0.3,
   "invert": {
@@ -32,19 +32,19 @@
   },
   "ppg": {
     "port": 4,
-    "bpm_rest": 84
+    "bpm_rest": 74
   },
   "emg": {
     "port": 5,
-    "sigma_rest": 0.38,
-    "sigma_flex": 6.28,
-    "gain": 6.0,
-    "dead_zone": 0.35,
-    "threshold": 2.45
+    "sigma_rest": 0.47,
+    "sigma_flex": 6.72,
+    "gain": 1.0,
+    "dead_zone": 0.491,
+    "threshold": 3.54
   },
   "eda": {
     "port": 6,
-    "rest": 9.01
+    "rest": 4.07
   },
   "skipped": {
     "ppg": false,

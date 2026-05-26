@@ -3,6 +3,9 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Session recordings (game-over JSON dumps from TetrisGame._finalize_session)
+sessions/
+
 # C extensions
 *.so
 

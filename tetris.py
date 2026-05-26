@@ -247,7 +247,6 @@ def draw_port_plot(surf, rect, samples, color, label, theme):
 def draw_plots_panel(surf, rect, device, port_labels, theme):
     pygame.draw.rect(surf, BG_PANEL, rect, border_radius=6)
     pygame.draw.rect(surf, PHOSPHOR_DIM, rect, 1, border_radius=6)
-    header = pygame.Rect(rect.left, rect.top, rect.w, 30)
     draw_text(surf, theme.f_med_b, "PORTS BITALINO",
               (rect.left + 12, rect.top + 6), color=TEXT_HI)
     plot_area = pygame.Rect(rect.left + 8, rect.top + 36,
@@ -255,10 +254,8 @@ def draw_plots_panel(surf, rect, device, port_labels, theme):
     n = 6
     row_h = plot_area.h // n
     for i in range(n):
-        pr = pygame.Rect(plot_area.left,
-                         plot_area.top + i * row_h,
+        pr = pygame.Rect(plot_area.left, plot_area.top + i * row_h,
                          plot_area.w, row_h - 2)
-        buf = []
         try:
             buf = list(device.live_buf[i])
         except Exception:
@@ -483,41 +480,34 @@ class TetrisGame:
                          self.port_labels, self.theme)
 
     def _draw_history_panel(self, rect):
-        """Grille 2×2 de courbes historiques en fin de partie : STRESS,
-        BPM, EDA, FACTEUR VITESSE. Stress graph stretche sur 2 cellules
-        horizontales (priorité visuelle demandée par l'utilisateur)."""
+        """Grille de courbes historiques en fin de partie : STRESS (large),
+        BPM + EDA, FACTEUR VITESSE. Stress sur sa propre ligne (priorité
+        visuelle demandée)."""
         draw_text(self.screen, self.theme.f_med_b,
                   "RÉCAPITULATIF — ÉVOLUTION BIOSIGNAUX",
                   (rect.left + 12, rect.top + 6), color=TEXT_HI)
         inner = pygame.Rect(rect.left + 8, rect.top + 34,
                             rect.w - 16, rect.h - 42)
-        # 3 lignes : stress (large), puis BPM/EDA, puis FACTEUR.
-        n_rows = 3
         gap = 6
-        row_h = (inner.h - (n_rows - 1) * gap) // n_rows
-        bio = self.bio
-        bpm_rest = getattr(bio, "bpm_rest", None)
-        eda_rest = getattr(bio, "eda_rest", None)
+        row_h = max(0, (inner.h - 2 * gap) // 3)
+        bpm_rest = getattr(self.bio, "bpm_rest", None)
+        eda_rest = getattr(self.bio, "eda_rest", None)
+        # (label, key, color, baseline, y_range, fill_under) par cellule ;
+        # 3 lignes, 1 ou 2 cellules par ligne.
         rows = [
-            # (label, key, color, baseline, y_range, fill_under)
-            [("STRESS  0..1",    "stress", DANGER,
-              0.5, (0.0, 1.0), True)],
-            [("BPM",             "bpm",    PHOSPHOR,
-              bpm_rest, None,    False),
-             ("EDA",             "eda",    PHOSPHOR_MID,
-              eda_rest, None,    False)],
-            [("FACTEUR VITESSE", "factor", AMBER,
-              1.0, (0.3, 2.0),  False)],
+            [("STRESS  0..1",    "stress", DANGER,      0.5,      (0.0, 1.0), True)],
+            [("BPM",             "bpm",    PHOSPHOR,    bpm_rest, None,       False),
+             ("EDA",             "eda",    PHOSPHOR_MID, eda_rest, None,      False)],
+            [("FACTEUR VITESSE", "factor", AMBER,       1.0,      (0.3, 2.0), False)],
         ]
         for ri, row in enumerate(rows):
             y = inner.top + ri * (row_h + gap)
             cw = (inner.w - (len(row) - 1) * gap) // len(row)
             for ci, (lbl, key, col, base, yr, fill) in enumerate(row):
-                gr = pygame.Rect(inner.left + ci * (cw + gap),
-                                 y, cw, row_h)
+                gr = pygame.Rect(inner.left + ci * (cw + gap), y, cw, row_h)
                 self._draw_history_plot(gr, key, col, lbl,
-                                         baseline=base, y_range=yr,
-                                         fill_under=fill)
+                                        baseline=base, y_range=yr,
+                                        fill_under=fill)
 
     def _draw_history_plot(self, rect, key, color, label,
                            baseline=None, y_range=None, fill_under=False):
@@ -648,15 +638,10 @@ class TetrisGame:
         stress = self.modulator.stress()
         # Couleur : vert calme (0) → ambre (0.5) → rouge stress max (1).
         if stress < 0.5:
-            k = stress * 2
-            sc = (int(PHOSPHOR_MID[0] + (AMBER[0] - PHOSPHOR_MID[0]) * k),
-                  int(PHOSPHOR_MID[1] + (AMBER[1] - PHOSPHOR_MID[1]) * k),
-                  int(PHOSPHOR_MID[2] + (AMBER[2] - PHOSPHOR_MID[2]) * k))
+            c1, c2, k = PHOSPHOR_MID, AMBER, stress * 2
         else:
-            k = (stress - 0.5) * 2
-            sc = (int(AMBER[0] + (DANGER[0] - AMBER[0]) * k),
-                  int(AMBER[1] + (DANGER[1] - AMBER[1]) * k),
-                  int(AMBER[2] + (DANGER[2] - AMBER[2]) * k))
+            c1, c2, k = AMBER, DANGER, (stress - 0.5) * 2
+        sc = tuple(int(c1[i] + (c2[i] - c1[i]) * k) for i in range(3))
         draw_text(self.screen, self.theme.f_tiny,
                   f"STRESS   {stress:.2f}",
                   (info_x, info_y), color=sc)
@@ -867,7 +852,7 @@ class TetrisGame:
                    "ESPC   hard drop", "TAB/P  pause", "R      restart"]
         else:
             ctl = ["Incl. G/D  bouger", "EMG        rotation",
-                   "Bas        soft drop", "Bas++      hard drop",
+                   "Haut/Bas   soft drop", "Bas++      hard drop",
                    "TAB / P    pause", "R          restart"]
         for c in ctl:
             draw_text(self.screen, self.theme.f_tiny, c,
