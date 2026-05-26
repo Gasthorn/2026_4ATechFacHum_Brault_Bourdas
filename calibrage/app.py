@@ -67,9 +67,14 @@ def _emg_gain_to_slider(g):
 #  Application
 # ─────────────────────────────────────────────
 class App:
-    def __init__(self, screen, address):
+    def __init__(self, screen, address, preconnected=None, force_demo=False):
+        """``preconnected=(device, acq_thread)`` saute la phase DETECT
+        (utile quand le lanceur a déjà ouvert la carte BITalino). Sinon
+        ``force_demo=True`` force directement le simulateur."""
         self.screen   = screen
         self.address  = address
+        self._initial_force_demo = force_demo
+        self._preconnected = preconnected
         w, h = screen.get_size()
         self.layout   = Layout(w, h)
         self.theme    = Theme(w, h)
@@ -120,8 +125,19 @@ class App:
 
         self.log_lines = deque(maxlen=10)
         self._log("SYSTEM BOOT ............................. OK")
-        self._log("AWAITING DEVICE DETECTION...")
-        self._start_detection()
+        if self._preconnected is not None:
+            # Carte BITalino (ou simulateur) déjà ouverte par le lanceur :
+            # on saute la phase DETECT et on commence directement par INTRO.
+            self.device, self.acq_thread = self._preconnected
+            self._demo = isinstance(self.device, SimulatedDevice)
+            self.detect_status = "ok"
+            self.state = STATE_INTRO
+            tag = "SIMULATED" if self._demo else "BITALINO"
+            self._log(f"DEVICE READY  → {tag} @ {SAMPLING_HZ} Hz "
+                      f"(carte déjà connectée par le lanceur)")
+        else:
+            self._log("AWAITING DEVICE DETECTION...")
+            self._start_detection(force_demo=self._initial_force_demo)
 
     # ── Logs ───────────────────────────────────────────────────────
     def _log(self, msg):
@@ -559,20 +575,33 @@ class App:
             return
         if self.state == STATE_UD:
             self.ud_samples = self._stop_recording()
-            self.y_axis = detect_y_axis(
-                self.rest_samples, self.ud_samples,
-                self._ppg_excl(self.emg_port, self.x_axis))
-            ys = [s[self.y_axis] for s in self.ud_samples]
-            self.y_min, self.y_max = min(ys), max(ys)
-            self.z_axis = detect_z_axis(
-                self.rest_samples,
-                self._ppg_excl(self.emg_port, self.x_axis, self.y_axis))
+            # Détection JOINTE X/Y/Z : on dispose de LR + UD + rest, on
+            # réassigne les 3 axes ensemble. Robuste aux mouvements
+            # diagonaux (un G/D pas pur sollicite un peu Y et Z, etc.) —
+            # c'est l'écart LR/UD par port qui décide, pas l'absolu.
+            x, y, z = detect_accel_axes(
+                self.rest_samples, self.lr_samples, self.ud_samples,
+                self._ppg_excl(self.emg_port))
+            self.x_axis, self.y_axis, self.z_axis = x, y, z
+            # Recalcule les plages X (peuvent différer si X a changé vs
+            # détection provisoire en fin de phase LR).
+            if x is not None and self.lr_samples:
+                xs = [s[x] for s in self.lr_samples]
+                self.x_min, self.x_max = min(xs), max(xs)
+            if y is not None and self.ud_samples:
+                ys = [s[y] for s in self.ud_samples]
+                self.y_min, self.y_max = min(ys), max(ys)
+            self._auto_ports["x"] = self.x_axis
             self._auto_ports["y"] = self.y_axis
             self._auto_ports["z"] = self.z_axis
-            self._log(f"Y AXIS DETECTED → PORT {self.y_axis + 1}  "
-                      f"[{self.y_min}..{self.y_max}]")
-            if self.z_axis is not None:
-                self._log(f"Z AXIS INFERRED  → PORT {self.z_axis + 1}")
+            if x is not None:
+                self._log(f"X AXIS (JOINT)   → PORT {x + 1}  "
+                          f"[{self.x_min}..{self.x_max}]")
+            if y is not None:
+                self._log(f"Y AXIS (JOINT)   → PORT {y + 1}  "
+                          f"[{self.y_min}..{self.y_max}]")
+            if z is not None:
+                self._log(f"Z AXIS (JOINT)   → PORT {z + 1}")
             if self.recal_target == "accel":   # fin de la tranche ACCELERO
                 if self.recal_queue:
                     self.recal_queue.pop(0)

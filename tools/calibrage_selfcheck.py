@@ -267,6 +267,18 @@ def main():
     lr = [(int(512 + 200 * math.sin(i * 0.3)), 512, 512, 400,
            int(64 + 300 * math.sin(i * 0.9)), 900) for i in range(600)]
     assert D.detect_x_axis(rest, lr, (3, 4)) == 0
+    # Détection JOINTE X/Y/Z avec mouvements DIAGONAUX : un balayage G/D
+    # peut un peu solliciter Y (~25 % d'amplitude), et un balayage H/B
+    # peut un peu solliciter X. Le port dominant doit gagner SON axe.
+    rest_xyz = [(512, 512, 780, 400, 64, 900) for _ in range(600)]
+    lr_diag = [(int(512 + 200 * math.sin(i * 0.3)),
+                int(512 +  60 * math.sin(i * 0.3)),       # contamination Y
+                780, 400, 64, 900) for i in range(600)]
+    ud_diag = [(int(512 +  60 * math.sin(i * 0.25)),       # contamination X
+                int(512 + 200 * math.sin(i * 0.25)),
+                780, 400, 64, 900) for i in range(600)]
+    xa, ya, za = D.detect_accel_axes(rest_xyz, lr_diag, ud_diag, (3, 4))
+    assert xa == 0 and ya == 1 and za == 2, (xa, ya, za)
     # EMG FAIBLE en ALTERNANCE 1 s contracté / 1 s relâché (freq 100 Hz,
     # 8 s) : amplitude ±10 ADC seulement → doit quand même être isolé.
     F = 100

@@ -23,6 +23,11 @@ from typing import Optional
 
 import pygame
 
+# Détection PPG mutualisée avec le calibrage (source unique : signal
+# lisser → seuil mean+0.35σ → pics avec min/max gap → score qualité).
+# Évite la dérive entre la σ_rest calibrée et le BPM live.
+from calibrage.detection import _estimate_bpm_and_score
+
 
 # ─────────────────────────────────────────────
 #  État biosignal live
@@ -72,13 +77,52 @@ class BioState:
 
         self._stop = False
         self._lock = threading.Lock()
+        # Tampons PLEIN DÉBIT (~1 kHz) issus du polling de device.latest.
+        # ``live_buf`` est décimé 1:8 (~125 Hz) — adapté aux plots et au
+        # BPM (signal lent) mais NOIE l'EMG (bursts haute fréquence) et
+        # introduit du retard sur l'accéléro. Le polling 1 ms restaure les
+        # σ EMG calibrées (mesurées à 1 kHz) et donne un x_norm/y_norm
+        # réactif (~50 ms de fenêtre).
+        self._fr_bufs = [deque(maxlen=1500) for _ in range(6)]
+        self._fr_lock = threading.Lock()
+        self._last_tick = -1
         self._thread = threading.Thread(target=self._loop, daemon=True)
+        self._poll  = threading.Thread(target=self._poll_loop, daemon=True)
 
     def start(self):
         self._thread.start()
+        self._poll.start()
 
     def stop(self):
         self._stop = True
+
+    # ── Polling plein débit de device.latest ─────────────────────
+    def _poll_loop(self):
+        while not self._stop:
+            try:
+                with self.device.lock:
+                    sample = self.device.latest
+                    tick = getattr(self.device, "_tick", None)
+                if sample is not None and tick != self._last_tick:
+                    self._last_tick = tick
+                    with self._fr_lock:
+                        for i, v in enumerate(sample):
+                            self._fr_bufs[i].append(v)
+            except Exception:
+                pass
+            time.sleep(0.001)
+
+    def _read_fr(self, port, n):
+        """Renvoie les ``n`` derniers échantillons plein débit du ``port``."""
+        if port is None:
+            return []
+        with self._fr_lock:
+            buf = self._fr_bufs[port]
+            if not buf:
+                return []
+            if n >= len(buf):
+                return list(buf)
+            return list(buf)[-n:]
 
     # ── boucle de mise à jour ─────────────────────────────────────
     def _loop(self):
@@ -87,7 +131,7 @@ class BioState:
                 self._update()
             except Exception:
                 pass
-            time.sleep(0.05)
+            time.sleep(0.02)   # 50 Hz : accéléro réactif sans saturer le CPU
 
     def _read_buf(self, port):
         if port is None:
@@ -98,41 +142,27 @@ class BioState:
         except Exception:
             return []
 
-    @staticmethod
-    def _bpm_from(buf, freq_eff):
-        """Estimation BPM rapide depuis la partie récente du live_buf."""
-        if len(buf) < 60:
-            return None
-        n = min(len(buf), 480)
-        col = buf[-n:]
-        m  = statistics.mean(col)
-        sd = statistics.pstdev(col) if len(col) > 1 else 0
-        if sd < 3:
-            return None
-        threshold = m + 0.3 * sd
-        min_gap = int(freq_eff * 60 / 180)
-        peaks = []
-        for i in range(1, len(col) - 1):
-            if col[i] >= threshold and col[i] >= col[i - 1] and col[i] >= col[i + 1]:
-                if not peaks or i - peaks[-1] >= min_gap:
-                    peaks.append(i)
-        if len(peaks) < 3:
-            return None
-        intervals = [peaks[k + 1] - peaks[k] for k in range(len(peaks) - 1)]
-        if not intervals:
-            return None
-        return int(round(60 * freq_eff / statistics.mean(intervals)))
+    # Seuil mini du score de qualité PPG pour mettre à jour ``self.bpm``.
+    # Sous ce seuil : signal jugé bruité (électrode débranchée, mouvement)
+    # → on garde la dernière valeur stable plutôt que dériver vers du n'importe quoi.
+    _BPM_MIN_SCORE = 0.5
 
     def _update(self):
         # live_buf est décimé : un échantillon tous les 8 frames @ SAMPLING_HZ
         freq = getattr(self.device, "frequency", 1000)
-        freq_eff = max(1, freq // 8)
 
         if self.ppg_port is not None:
-            bpm = self._bpm_from(self._read_buf(self.ppg_port), freq_eff)
-            if bpm is not None and 40 <= bpm <= 220:
-                with self._lock:
-                    self.bpm = self.bpm * 0.7 + bpm * 0.3  # lissage exponentiel
+            # BPM sur les ~3 dernières secondes PLEIN DÉBIT (3000 @ 1 kHz).
+            # Mutualise ``_estimate_bpm_and_score`` du calibrage : smoothing
+            # box + filtre min/max gap + score qualité. Sous ``_BPM_MIN_SCORE``
+            # → on garde la dernière valeur stable (rejet bruit / décrochage).
+            win = self._read_fr(self.ppg_port, 3 * freq)
+            if len(win) >= freq:
+                bpm, score = _estimate_bpm_and_score(win, freq)
+                if (score >= self._BPM_MIN_SCORE
+                        and 40 <= bpm <= 220):
+                    with self._lock:
+                        self.bpm = self.bpm * 0.7 + bpm * 0.3
 
         if self.eda_port is not None:
             buf = self._read_buf(self.eda_port)
@@ -142,20 +172,27 @@ class BioState:
                     self.eda = self.eda * 0.8 + eda_now * 0.2
 
         if self.emg_port is not None:
-            buf = self._read_buf(self.emg_port)
-            if len(buf) >= 20:
-                # σ sur la fenêtre récente (~1 s) amplifiée au-dessus du repos
-                win = buf[-min(len(buf), 130):]
-                sigma_raw = statistics.pstdev(win) if len(win) > 1 else 0.0
+            # σ EMG sur les 1000 derniers échantillons PLEIN DÉBIT (~1 s
+            # @ 1 kHz) — même cadence que la calibration ⇒ σ_raw cohérent
+            # avec ``emg_rest`` / ``emg_flex``. Avec live_buf décimé 1:8,
+            # σ_raw était fortement sous-estimée (le bruit large-bande
+            # disparaît à la décimation) ⇒ seuil jamais franchi.
+            win = self._read_fr(self.emg_port, 1000)
+            if len(win) >= 50:
+                sigma_raw = statistics.pstdev(win)
                 sigma_amp = self.emg_rest + self.emg_gain * (sigma_raw - self.emg_rest)
                 with self._lock:
                     self.emg_sigma = sigma_amp
                     self.emg_active_raw = sigma_amp >= self.emg_thresh
 
         if self.x_port is not None:
-            buf = self._read_buf(self.x_port)
-            if buf:
-                x_now = statistics.mean(buf[-min(len(buf), 10):])
+            # x_norm sur les 50 derniers échantillons PLEIN DÉBIT (~50 ms
+            # @ 1 kHz) : assez court pour rester réactif, assez long pour
+            # filtrer le bruit. Avant : 10 × ~8 ms = 80 ms via live_buf
+            # décimé ⇒ retard perçu et faible résolution.
+            win = self._read_fr(self.x_port, 50)
+            if win:
+                x_now = statistics.mean(win)
                 left_span  = max(1, self.x_rest - self.x_min)
                 right_span = max(1, self.x_max - self.x_rest)
                 if x_now < self.x_rest:
@@ -168,9 +205,9 @@ class BioState:
                     self.x_norm = max(-1.5, min(1.5, nx))
 
         if self.y_port is not None:
-            buf = self._read_buf(self.y_port)
-            if buf:
-                y_now = statistics.mean(buf[-min(len(buf), 10):])
+            win = self._read_fr(self.y_port, 50)
+            if win:
+                y_now = statistics.mean(win)
                 down_span = max(1, self.y_rest - self.y_min)
                 up_span   = max(1, self.y_max - self.y_rest)
                 if y_now < self.y_rest:
@@ -210,6 +247,7 @@ class BioSpeedModulator:
     def __init__(self, bio: Optional[BioState]):
         self.bio = bio
         self._smoothed = 1.0
+        self._smoothed_stress = 0.0   # 0..1 visible côté UI
 
     def factor(self) -> float:
         if self.bio is None:
@@ -222,6 +260,11 @@ class BioSpeedModulator:
         stress_eda = eda_delta / self.EDA_FULL_DELTA
         stress = max(stress_bpm, stress_eda)   # le pire signal pilote
         stress = max(-0.8, min(1.0, stress))
+        # Indicateur visible 0..1 : on remappe les valeurs négatives (très
+        # calme) à 0. Lissage exponentiel comme le facteur de vitesse.
+        stress_pos = max(0.0, min(1.0, stress))
+        self._smoothed_stress = (self._smoothed_stress * 0.9
+                                  + stress_pos * 0.1)
         # mapping linéaire : stress  -0.8 → 2.0 ; 0 → 1.0 ; 1 → 0.3
         if stress >= 0:
             target = 1.0 - 0.7 * stress
@@ -229,6 +272,11 @@ class BioSpeedModulator:
             target = 1.0 + (-stress) * 1.25       # 1 + 0.8*1.25 = 2.0
         self._smoothed = self._smoothed * 0.9 + target * 0.1
         return max(0.3, min(2.0, self._smoothed))
+
+    def stress(self) -> float:
+        """Niveau de stress lissé (0 = repos / calme, 1 = stress max).
+        Combinaison max(stress_bpm, stress_eda) ⇒ le pire signal pilote."""
+        return max(0.0, min(1.0, self._smoothed_stress))
 
 
 # ─────────────────────────────────────────────
@@ -254,7 +302,8 @@ class KeyboardInputHandler:
                    for e in self._events)
 
     def action_pause(self) -> bool:
-        return any(e.type == pygame.KEYDOWN and e.key == pygame.K_p
+        return any(e.type == pygame.KEYDOWN
+                   and e.key in (pygame.K_p, pygame.K_TAB)
                    for e in self._events)
 
     def action_restart(self) -> bool:
@@ -332,7 +381,8 @@ class BitalinoInputHandler:
         return kb
 
     def action_pause(self) -> bool:
-        return any(e.type == pygame.KEYDOWN and e.key == pygame.K_p
+        return any(e.type == pygame.KEYDOWN
+                   and e.key in (pygame.K_p, pygame.K_TAB)
                    for e in self._events)
 
     def action_restart(self) -> bool:

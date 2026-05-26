@@ -38,8 +38,9 @@ from calibrage.config import (
 )
 from calibrage.device import SimulatedDevice
 from calibrage.ui import (
-    Button, Theme, draw_block, draw_corner_brackets, draw_panel,
-    draw_text, draw_text_centered, make_grid, make_scanlines, make_vignette,
+    Button, Theme, draw_block, draw_corner_brackets, draw_gauge, draw_panel,
+    draw_radar, draw_text, draw_text_centered, make_grid, make_scanlines,
+    make_vignette,
 )
 from runtime import (
     BioState, BioSpeedModulator, BitalinoInputHandler, KeyboardInputHandler,
@@ -66,6 +67,13 @@ LINE_SCORES = {1: 100, 2: 300, 3: 500, 4: 800}
 
 BASE_DROP_MIN_MS = 100
 BASE_DROP_MAX_MS = 800
+
+# Accélération temporelle inéluctable (en plus du niveau + biosignaux) :
+# tous les TIME_RAMP_SEC, l'intervalle de chute est multiplié par
+# TIME_RAMP_GAIN. Plancher TIME_FACTOR_MIN borne la vitesse maxi.
+TIME_RAMP_SEC    = 20.0   # palier d'accélération (s)
+TIME_RAMP_GAIN   = 0.92   # ×0.92 par palier ⇒ +8.7 % vitesse
+TIME_FACTOR_MIN  = 0.15   # vitesse maxi ≈ ×6.7 / jeu neutre
 
 
 def base_drop_interval(level: int) -> int:
@@ -276,6 +284,11 @@ class TetrisGame:
         self._rebuild_overlays()
         self.clock = pygame.time.Clock()
         self.t0 = time.time()
+        # Boutons du menu pause : recommencer / recalibrer / quitter.
+        self.btn_pause_restart = Button("[  RECOMMENCER  ]", accent=PHOSPHOR)
+        self.btn_pause_recal = Button("[  RECALIBRER  ]", accent=DANGER)
+        self.btn_pause_quit  = Button("[  QUITTER  ]", accent=PHOSPHOR_MID)
+        self.exit_reason = "done"   # 'done' | 'quit' | 'recalibrate'
         self.reset()
 
     def _rebuild_overlays(self):
@@ -307,6 +320,7 @@ class TetrisGame:
         self._move_repeat = 50
         self._last_move_dir = 0
         self._move_held_ms = 0
+        self._game_start_t = time.time()
 
     # ── Logique ───────────────────────────────────────────────
     def _ghost_y(self):
@@ -339,7 +353,13 @@ class TetrisGame:
 
     def _drop_interval(self):
         base = base_drop_interval(self.level)
-        return max(40, int(base * self.modulator.factor()))
+        # Accélération temporelle inéluctable : tous les TIME_RAMP_SEC,
+        # l'intervalle est multiplié par TIME_RAMP_GAIN (0.92 ⇒ +8.7%
+        # vitesse). Plancher TIME_FACTOR_MIN évite l'asymptote → 0.
+        elapsed = time.time() - self._game_start_t
+        steps = elapsed / TIME_RAMP_SEC
+        time_factor = max(TIME_FACTOR_MIN, TIME_RAMP_GAIN ** steps)
+        return max(30, int(base * self.modulator.factor() * time_factor))
 
     def update(self, dt_ms, events):
         self.handler.update(events)
@@ -400,9 +420,8 @@ class TetrisGame:
         # Stats à gauche
         self._draw_stats(self.layout.stats_rect)
 
-        # Plots à droite
-        draw_plots_panel(s, self.layout.plots_rect, self.device,
-                         self.port_labels, self.theme)
+        # Panneau droit : widgets capteurs en haut + 6 plots ports en bas
+        self._draw_right_panel(self.layout.plots_rect)
 
         # Overlays décoratifs
         s.blit(self.scanlines, (0, 0))
@@ -410,11 +429,133 @@ class TetrisGame:
 
         if self.paused:
             self._overlay("PAUSE", "P pour reprendre")
+            self._draw_pause_buttons()
         elif self.game_over:
             self._overlay("GAME OVER",
                           f"Score : {self.score}    R pour rejouer")
+            self._draw_pause_buttons()
 
         pygame.display.flip()
+
+    def _draw_right_panel(self, rect):
+        """Panneau droit : ligne du haut = widgets capteurs (radar accéléro
+        + jauge EMG + libellé vitesse), reste = 6 mini-plots ports."""
+        pygame.draw.rect(self.screen, BG_PANEL, rect, border_radius=6)
+        pygame.draw.rect(self.screen, PHOSPHOR_DIM, rect, 1, border_radius=6)
+        # Bandeau widgets (jamais plus de 40% de la hauteur)
+        widget_h = min(220, max(160, rect.h // 3))
+        widget_r = pygame.Rect(rect.left + 6, rect.top + 6,
+                               rect.w - 12, widget_h)
+        self._draw_sensor_widgets(widget_r)
+        # Plots dessous
+        plot_r = pygame.Rect(rect.left, widget_r.bottom + 4,
+                             rect.w, rect.bottom - (widget_r.bottom + 4))
+        draw_plots_panel(self.screen, plot_r, self.device,
+                         self.port_labels, self.theme)
+
+    def _draw_sensor_widgets(self, rect):
+        """Radar accéléromètre (G/D + H/B + zone morte) + jauge EMG."""
+        pygame.draw.rect(self.screen, BG_DEEP, rect, border_radius=4)
+        pygame.draw.rect(self.screen, PHOSPHOR_DIM, rect, 1, border_radius=4)
+        draw_text(self.screen, self.theme.f_med_b, "CAPTEURS LIVE",
+                  (rect.left + 12, rect.top + 6), color=TEXT_HI)
+        if self.bio is None:
+            draw_text_centered(self.screen, self.theme.f_tiny,
+                               "— aucun capteur —", rect.center,
+                               color=TEXT_FAINT)
+            return
+        snap = self.bio.snapshot()
+        # Layout : RADAR à gauche (carré), jauges/stats à droite
+        radar_side = min(rect.h - 36, rect.w // 2)
+        radar_r = pygame.Rect(rect.left + 8,
+                              rect.top + 30,
+                              radar_side, radar_side)
+        draw_radar(self.screen, radar_r, snap["x_norm"], snap["y_norm"],
+                   self.bio.dead_zone, self.theme)
+
+        # Côté droit : valeurs + jauge EMG
+        info_x = radar_r.right + 12
+        info_w = rect.right - info_x - 8
+        info_y = rect.top + 34
+        lh = self.theme.f_tiny.get_height() + 2
+
+        for txt, col in (
+            (f"X  {snap['x_norm']:+.2f}",
+             AMBER if abs(snap["x_norm"]) > self.bio.dead_zone else TEXT_MID),
+            (f"Y  {snap['y_norm']:+.2f}",
+             AMBER if abs(snap["y_norm"]) > self.bio.dead_zone else TEXT_MID),
+            (f"PULS {snap['bpm']:.0f} BPM  (repos {self.bio.bpm_rest:.0f})",
+             DANGER),
+            (f"EDA  {snap['eda']:.0f}      (repos {self.bio.eda_rest:.0f})",
+             PHOSPHOR_MID),
+        ):
+            draw_text(self.screen, self.theme.f_tiny, txt,
+                      (info_x, info_y), color=col)
+            info_y += lh
+
+        info_y += 4
+        draw_text(self.screen, self.theme.f_tiny,
+                  f"EMG σ  {snap['emg_sigma']:.2f}  / "
+                  f"seuil {self.bio.emg_thresh:.2f}",
+                  (info_x, info_y),
+                  color=AMBER if snap["emg_active"] else TEXT_MID)
+        info_y += lh
+        gauge_r = pygame.Rect(info_x, info_y, info_w, 14)
+        scale_max = max(self.bio.emg_thresh * 2,
+                        snap["emg_sigma"] * 1.1, 1.0)
+        draw_gauge(self.screen, gauge_r, snap["emg_sigma"],
+                   self.bio.emg_thresh, scale_max, AMBER,
+                   snap["emg_active"])
+        info_y += 24
+        draw_text(self.screen, self.theme.f_tiny,
+                  f"VITESSE  ×{1.0/self.modulator.factor():.2f}",
+                  (info_x, info_y), color=PHOSPHOR)
+
+        # ── Indicateur de STRESS 0..1 (BPM + EDA combinés)
+        info_y += lh + 6
+        stress = self.modulator.stress()
+        # Couleur : vert calme (0) → ambre (0.5) → rouge stress max (1).
+        if stress < 0.5:
+            k = stress * 2
+            sc = (int(PHOSPHOR_MID[0] + (AMBER[0] - PHOSPHOR_MID[0]) * k),
+                  int(PHOSPHOR_MID[1] + (AMBER[1] - PHOSPHOR_MID[1]) * k),
+                  int(PHOSPHOR_MID[2] + (AMBER[2] - PHOSPHOR_MID[2]) * k))
+        else:
+            k = (stress - 0.5) * 2
+            sc = (int(AMBER[0] + (DANGER[0] - AMBER[0]) * k),
+                  int(AMBER[1] + (DANGER[1] - AMBER[1]) * k),
+                  int(AMBER[2] + (DANGER[2] - AMBER[2]) * k))
+        draw_text(self.screen, self.theme.f_tiny,
+                  f"STRESS   {stress:.2f}",
+                  (info_x, info_y), color=sc)
+        info_y += lh
+        stress_r = pygame.Rect(info_x, info_y, info_w, 14)
+        pygame.draw.rect(self.screen, BG_DEEP, stress_r, border_radius=3)
+        fill_w = int(info_w * stress)
+        if fill_w > 2:
+            pygame.draw.rect(self.screen, sc,
+                             pygame.Rect(stress_r.left + 1, stress_r.top + 1,
+                                         fill_w - 2, stress_r.h - 2),
+                             border_radius=3)
+        # Repère mi-course 0.5
+        mid_x = stress_r.left + stress_r.w // 2
+        pygame.draw.line(self.screen, TEXT_MID,
+                         (mid_x, stress_r.top - 1),
+                         (mid_x, stress_r.bottom + 1), 1)
+        pygame.draw.rect(self.screen, PHOSPHOR_DIM, stress_r, 1, border_radius=3)
+
+    def _draw_pause_buttons(self):
+        r = self.layout.grid_rect
+        bw, bh, gap = min(240, r.w - 40), 44, 12
+        bx = r.centerx - bw // 2
+        by = r.centery + 80
+        self.btn_pause_restart.rect = pygame.Rect(bx, by, bw, bh)
+        self.btn_pause_recal.rect   = pygame.Rect(bx, by + (bh + gap), bw, bh)
+        self.btn_pause_quit.rect    = pygame.Rect(bx, by + 2 * (bh + gap), bw, bh)
+        ta = time.time() - self.t0
+        self.btn_pause_restart.draw(self.screen, self.theme.f_med_b, ta)
+        self.btn_pause_recal.draw(self.screen, self.theme.f_med_b, ta)
+        self.btn_pause_quit.draw(self.screen, self.theme.f_med_b, ta)
 
     def _draw_stats(self, rect):
         pygame.draw.rect(self.screen, BG_PANEL, rect, border_radius=8)
@@ -451,31 +592,20 @@ class TetrisGame:
                       (x, y), color=col)
             y += self.theme.f_big.get_height() + 8
 
-        # Biosignaux
-        y += 4
-        draw_text(self.screen, self.theme.f_small, "BIOSIGNAUX",
-                  (x, y), color=TEXT_DIM)
-        y += self.theme.f_small.get_height() + 4
+        # Biosignaux : compact (détails sur le panneau droit avec radar).
         if self.bio is not None:
             snap = self.bio.snapshot()
-            lines = [
-                (f"PULS  {snap['bpm']:.0f} BPM  "
-                 f"(repos {self.bio.bpm_rest:.0f})", DANGER),
-                (f"EDA   {snap['eda']:.0f}      "
-                 f"(repos {self.bio.eda_rest:.0f})", PHOSPHOR_MID),
-                (f"EMG   σ={snap['emg_sigma']:.1f}  "
-                 f"{'CONTRACTE' if snap['emg_active'] else 'relâché'}",
-                 AMBER if snap['emg_active'] else TEXT_MID),
-                (f"VIT   ×{1.0/self.modulator.factor():.2f}", PHOSPHOR),
-            ]
-            for txt, col in lines:
-                draw_text(self.screen, self.theme.f_tiny, txt,
-                          (x, y), color=col)
-                y += self.theme.f_tiny.get_height() + 2
-        else:
+            draw_text(self.screen, self.theme.f_small, "BIOSIGNAUX",
+                      (x, y), color=TEXT_DIM)
+            y += self.theme.f_small.get_height() + 2
             draw_text(self.screen, self.theme.f_tiny,
-                      "Aucun capteur connecté", (x, y), color=TEXT_FAINT)
-            y += self.theme.f_tiny.get_height() + 2
+                      f"PULS  {snap['bpm']:.0f} BPM",
+                      (x, y), color=DANGER)
+            y += self.theme.f_tiny.get_height() + 1
+            draw_text(self.screen, self.theme.f_tiny,
+                      f"VITESSE ×{1.0/self.modulator.factor():.2f}",
+                      (x, y), color=PHOSPHOR)
+            y += self.theme.f_tiny.get_height() + 4
 
         # Commandes
         y += 8
@@ -483,12 +613,12 @@ class TetrisGame:
                   (x, y), color=TEXT_DIM)
         y += self.theme.f_small.get_height() + 2
         if isinstance(self.handler, KeyboardInputHandler):
-            ctl = ["← →   déplacer", "↑     rotation", "↓     soft drop",
-                   "ESPC  hard drop", "P     pause", "R     restart"]
+            ctl = ["← →    déplacer", "↑      rotation", "↓      soft drop",
+                   "ESPC   hard drop", "TAB/P  pause", "R      restart"]
         else:
-            ctl = ["Incl. G/D  bouger", "EMG       rotation",
-                   "Bas       soft drop", "Bas++     hard drop",
-                   "P / R     pause/restart"]
+            ctl = ["Incl. G/D  bouger", "EMG        rotation",
+                   "Bas        soft drop", "Bas++      hard drop",
+                   "TAB / P    pause", "R          restart"]
         for c in ctl:
             draw_text(self.screen, self.theme.f_tiny, c,
                       (x, y), color=TEXT_MID)
@@ -520,10 +650,14 @@ class TetrisGame:
                            (r.centerx, r.centery + 60), color=TEXT_MID)
 
     def run(self):
+        """Boucle principale. Renvoie 'quit' (fermeture), 'recalibrate'
+        (bouton RECALIBRER en pause), ou 'done' (game over puis quit)."""
+        self.exit_reason = "quit"
         running = True
         while running:
             dt = self.clock.tick(FPS)
             events = pygame.event.get()
+            mouse  = pygame.mouse.get_pos()
             for e in events:
                 if e.type == pygame.QUIT:
                     running = False
@@ -534,9 +668,21 @@ class TetrisGame:
                     new_h = max(MIN_H, e.h)
                     self.screen = pygame.display.set_mode(
                         (new_w, new_h), pygame.RESIZABLE | pygame.DOUBLEBUF)
+            # Boutons pause/game-over actifs UNIQUEMENT quand ils s'affichent.
+            if self.paused or self.game_over:
+                if self.btn_pause_restart.update(mouse, events):
+                    self.reset()
+                    self.paused = False
+                if self.btn_pause_recal.update(mouse, events):
+                    self.exit_reason = "recalibrate"
+                    running = False
+                if self.btn_pause_quit.update(mouse, events):
+                    self.exit_reason = "quit"
+                    running = False
             self._maybe_resize()
             self.update(dt, events)
             self.draw()
+        return self.exit_reason
 
 
 # ─────────────────────────────────────────────
@@ -653,37 +799,59 @@ def main(argv=None):
     flags = pygame.RESIZABLE | pygame.DOUBLEBUF
     screen = pygame.display.set_mode((INITIAL_W, INITIAL_H), flags)
 
+    # ── Détection OBLIGATOIRE au démarrage. Si la carte BITalino n'est
+    # pas trouvée → bascule auto en MODE DÉMO (simulateur). Plus de chemin
+    # sans device : runtime + plots ont toujours un signal à lire.
+    shared_device, shared_thread, is_real = _startup_detection(
+        screen, address, force_demo=force_demo)
+    if shared_device is None:
+        pygame.quit(); return
+    screen = pygame.display.get_surface() or screen
+
     # ── Menu de départ : jouer direct (si calib OK) ou calibrer
     has_cal = _has_valid_calibration()
+    subtitle = (f"BITalino connectée — {address}" if is_real
+                else "MODE DÉMO — carte BITalino introuvable")
     pick = _menu(
-        screen, "TETRINO",
-        "Tetris piloté par capteurs BITalino",
+        screen, "TETRINO", subtitle,
         [("JOUER (calibration sauvée)", "play", has_cal),
          ("CALIBRER", "calibrate", True),
          ("QUITTER", "quit", True)])
     if pick in (None, "quit"):
+        shared_device.stop_flag = True
+        try: shared_device.stop(); shared_device.close()
+        except Exception: pass
         pygame.quit(); return
-    # Le menu peut avoir redimensionné : récupère la display courante.
     screen = pygame.display.get_surface() or screen
 
-    shared_device = None
-    shared_thread = None
-
     if pick == "calibrate":
-        cal_app = CalibrationApp(screen, address)
+        # Carte déjà ouverte par le lanceur → on la passe à CalibrationApp
+        # pour éviter une seconde détection.
+        cal_app = CalibrationApp(screen, address,
+                                 preconnected=(shared_device, shared_thread))
         ok = cal_app.run()
         screen = pygame.display.get_surface() or screen
         if not ok:
+            shared_device.stop_flag = True
+            try: shared_device.stop(); shared_device.close()
+            except Exception: pass
             pygame.quit(); return
+        # CalibrationApp partage le device (préconnecté) — récupère au cas
+        # où il en aurait reconnecté un (ex. RETRY interne).
         shared_device = cal_app.device
         shared_thread = cal_app.acq_thread
-        # Recharge la calibration fraîchement écrite
         try:
             calib = _load_calibration()
         except Exception:
             pygame.quit(); return
     else:
-        calib = _load_calibration()
+        try:
+            calib = _load_calibration()
+        except Exception:
+            shared_device.stop_flag = True
+            try: shared_device.stop(); shared_device.close()
+            except Exception: pass
+            pygame.quit(); return
 
     # ── Menu d'entrée
     mode = _menu(
@@ -694,37 +862,45 @@ def main(argv=None):
          ("QUITTER", "quit", True)])
     screen = pygame.display.get_surface() or screen
     if mode in (None, "quit"):
-        if shared_device is not None:
-            shared_device.stop_flag = True
-            try: shared_device.stop(); shared_device.close()
-            except Exception: pass
+        shared_device.stop_flag = True
+        try: shared_device.stop(); shared_device.close()
+        except Exception: pass
         pygame.quit(); return
 
-    # ── Connexion device si pas déjà partagée (chemin "JOUER DIRECT")
-    if shared_device is None:
-        shared_device = _connect_device(address, force_demo=force_demo)
-        if shared_device is None:
-            pygame.quit(); return
-        shared_thread = getattr(shared_device, "_thread_handle", None)
-
-    # ── État biosignal + modulateur de vitesse
-    bio = BioState(shared_device, calib)
-    bio.start()
-    modulator = BioSpeedModulator(bio)
-
-    # ── Handler entrée
-    if mode == "keyboard":
-        handler = KeyboardInputHandler()
-    else:
-        handler = BitalinoInputHandler(bio)
-
-    port_labels = _port_labels_from_calib(calib)
-    game = TetrisGame(screen, handler, modulator, shared_device,
-                      port_labels, bio)
+    # ── Boucle JEU ↔ RECALIBRER : le menu pause peut renvoyer vers la
+    # calibration sans fermer la fenêtre ni rouvrir la carte.
     try:
-        game.run()
+        while True:
+            bio = BioState(shared_device, calib)
+            bio.start()
+            modulator = BioSpeedModulator(bio)
+            handler = (KeyboardInputHandler() if mode == "keyboard"
+                       else BitalinoInputHandler(bio))
+            port_labels = _port_labels_from_calib(calib)
+            game = TetrisGame(screen, handler, modulator, shared_device,
+                              port_labels, bio)
+            reason = game.run()
+            bio.stop()
+            screen = pygame.display.get_surface() or screen
+            if reason != "recalibrate":
+                break
+            # Recalibrage depuis le menu pause : on relance CalibrationApp
+            # avec le device partagé, on recharge calibration.json, puis
+            # on revient au jeu (même mode d'entrée).
+            cal_app = CalibrationApp(
+                screen, address,
+                preconnected=(shared_device, shared_thread))
+            ok = cal_app.run()
+            screen = pygame.display.get_surface() or screen
+            if not ok:
+                break
+            shared_device = cal_app.device
+            shared_thread = cal_app.acq_thread
+            try:
+                calib = _load_calibration()
+            except Exception:
+                break
     finally:
-        bio.stop()
         if shared_device is not None:
             shared_device.stop_flag = True
             try: shared_device.stop(); shared_device.close()
@@ -733,7 +909,10 @@ def main(argv=None):
 
 
 def _connect_device(address, force_demo=False):
-    """Connexion BITalino (ou simulateur si ``--demo`` / plux absent)."""
+    """Connexion BITalino (ou simulateur si ``--demo`` / plux absent).
+
+    Renvoie ``(device, is_real)`` : ``is_real=True`` si carte BITalino
+    réelle, ``False`` si fallback simulateur."""
     import threading
     from calibrage.config import PLUX_AVAILABLE, ALL_PORTS
     if force_demo or not PLUX_AVAILABLE:
@@ -741,7 +920,7 @@ def _connect_device(address, force_demo=False):
         t = threading.Thread(target=d.loop, daemon=True)
         t.start()
         d._thread_handle = t
-        return d
+        return d, False
     try:
         from calibrage.device import CalibrationDevice
         d = CalibrationDevice(address)
@@ -750,14 +929,115 @@ def _connect_device(address, force_demo=False):
         t = threading.Thread(target=d.loop, daemon=True)
         t.start()
         d._thread_handle = t
-        return d
+        return d, True
     except Exception as exc:
         print(f"Connexion BITalino impossible ({exc}) — mode démo.")
         d = SimulatedDevice()
         t = threading.Thread(target=d.loop, daemon=True)
         t.start()
         d._thread_handle = t
-        return d
+        return d, False
+
+
+def _startup_detection(screen, address, force_demo=False):
+    """Écran de détection au LANCEMENT : tente la carte BITalino. En cas
+    d'échec, affiche [RÉESSAYER] / [MODE DÉMO] et reste sur l'écran tant
+    que l'utilisateur n'a pas tranché. Renvoie ``(device, thread, is_real)``
+    ou ``(None, None, False)`` si fenêtre fermée."""
+    import threading
+    theme = Theme(*screen.get_size())
+    bg = make_grid(*screen.get_size())
+    scan = make_scanlines(*screen.get_size(), alpha=20, spacing=3)
+    vig = make_vignette(*screen.get_size())
+    clock = pygame.time.Clock()
+    btn_retry = Button("[  RÉESSAYER  ]", accent=AMBER)
+    btn_demo  = Button("[  MODE DÉMO  ]", accent=PHOSPHOR_MID)
+
+    result = {"device": None, "is_real": False, "done": False,
+              "phase": "scan"}   # scan / fail / ok
+    scan_t0 = [time.time()]
+    force_local = [force_demo]
+
+    def launch():
+        result["device"]  = None
+        result["is_real"] = False
+        result["done"]    = False
+        result["phase"]   = "scan"
+        scan_t0[0] = time.time()
+
+        def worker():
+            d, ok = _connect_device(address, force_demo=force_local[0])
+            # Délai mini pour que l'utilisateur voie le scan
+            time.sleep(max(0.0, scan_t0[0] + 1.0 - time.time()))
+            result["device"]  = d
+            result["is_real"] = ok
+            result["phase"]   = "ok" if (ok or force_local[0]) else "fail"
+            result["done"]    = True
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    launch()
+    while True:
+        clock.tick(FPS)
+        w, h = screen.get_size()
+        screen.blit(bg, (0, 0))
+        elapsed = time.time() - scan_t0[0]
+        dots = "." * (int(elapsed * 3) % 4)
+
+        if result["phase"] == "scan":
+            sub, col = f"DÉTECTION DE LA CARTE BITALINO{dots}", PHOSPHOR_MID
+        elif result["phase"] == "ok":
+            sub = ("BITALINO CONNECTÉE" if result["is_real"]
+                   else "MODE DÉMO ACTIVÉ")
+            col = PHOSPHOR if result["is_real"] else PHOSPHOR_MID
+        else:
+            sub = "CARTE INTROUVABLE — RÉESSAYER OU PASSER EN DÉMO"
+            col = DANGER
+
+        draw_text_centered(screen, theme.f_huge, "TETRINO",
+                           (w // 2, h // 3), color=TEXT_HI)
+        draw_text_centered(screen, theme.f_med, sub,
+                           (w // 2, h // 2), color=col)
+        draw_text_centered(screen, theme.f_tiny,
+                           f"adresse cible : {address}",
+                           (w // 2, h // 2 + 50), color=TEXT_DIM)
+
+        # Boutons RÉESSAYER / MODE DÉMO en phase d'échec
+        events = pygame.event.get()
+        mouse = pygame.mouse.get_pos()
+        if result["phase"] == "fail":
+            btn_retry.rect = pygame.Rect(w // 2 - 320, h // 2 + 100, 280, 56)
+            btn_demo.rect  = pygame.Rect(w // 2 +  40, h // 2 + 100, 280, 56)
+            if btn_retry.update(mouse, events):
+                force_local[0] = False
+                launch()
+            if btn_demo.update(mouse, events):
+                force_local[0] = True
+                launch()
+            btn_retry.draw(screen, theme.f_med_b, time.time())
+            btn_demo.draw(screen, theme.f_med_b, time.time())
+
+        for e in events:
+            if e.type == pygame.QUIT:
+                return None, None, False
+            if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:
+                return None, None, False
+            if e.type == pygame.VIDEORESIZE:
+                new_w = max(MIN_W, e.w); new_h = max(MIN_H, e.h)
+                screen = pygame.display.set_mode(
+                    (new_w, new_h), pygame.RESIZABLE | pygame.DOUBLEBUF)
+                theme.update(new_w, new_h)
+                bg   = make_grid(new_w, new_h)
+                scan = make_scanlines(new_w, new_h, alpha=20, spacing=3)
+                vig  = make_vignette(new_w, new_h)
+
+        screen.blit(scan, (0, 0))
+        screen.blit(vig, (0, 0))
+        pygame.display.flip()
+
+        if result["phase"] == "ok" and elapsed > 0.8:
+            d = result["device"]
+            return d, getattr(d, "_thread_handle", None), result["is_real"]
 
 
 if __name__ == "__main__":
