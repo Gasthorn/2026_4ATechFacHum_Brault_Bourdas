@@ -57,6 +57,50 @@ def detect_z_axis(rest_samples, exclude=()):
     return max(cands, key=lambda c: abs(means[c] - 512))
 
 
+def detect_accel_axes(rest_samples, lr_samples, ud_samples, exclude=()):
+    """Détection JOINTE des 3 axes accéléromètre (X / Y / Z).
+
+    Les mouvements de calibration ne sont jamais purs : un balayage G/D
+    réel sollicite un peu Y (épaule qui s'incline) et Z (rotation poignet),
+    et inversement. La détection séquentielle « max σ par phase » peut donc
+    confondre les axes quand l'utilisateur bouge en diagonale.
+
+    Approche : pour chaque port plausible, on calcule la σ EN EXCÈS du
+    repos sur les phases LR et UD. L'axe X est le port dont la composante
+    LR domine NETTEMENT la composante UD (différence maximale), Y est le
+    symétrique parmi les ports restants, Z est le port accéléro restant le
+    plus excentré au repos (gravité). C'est le RATIO LR/UD qui décide ;
+    un port qui répond un peu aux deux ne usurpe plus l'axe principal.
+    """
+    cands = _accel_candidates(rest_samples, exclude)
+    if not cands:
+        return None, None, None
+
+    scores = {}
+    for p in cands:
+        sr = _col_std(rest_samples, p)
+        sl = max(0.0, _col_std(lr_samples, p) - sr) if lr_samples else 0.0
+        su = max(0.0, _col_std(ud_samples, p) - sr) if ud_samples else 0.0
+        scores[p] = (sl, su)
+
+    # X : maximise (LR − UD). Bouge ÉNORMÉMENT en LR et peu en UD.
+    x = max(cands, key=lambda p: scores[p][0] - scores[p][1])
+    rem = [p for p in cands if p != x]
+    if not rem:
+        return x, None, None
+
+    # Y : maximise (UD − LR) parmi le reste.
+    y = max(rem, key=lambda p: scores[p][1] - scores[p][0])
+    rem2 = [p for p in rem if p != y]
+    if not rem2:
+        return x, y, None
+
+    # Z : port accéléro restant à la moyenne la plus excentrée (gravité).
+    means = {p: statistics.mean(s[p] for s in rest_samples) for p in rem2}
+    z = max(rem2, key=lambda p: abs(means[p] - 512))
+    return x, y, z
+
+
 # ─────────────────────────────────────────────
 #  Détection PPG / rythme cardiaque
 # ─────────────────────────────────────────────

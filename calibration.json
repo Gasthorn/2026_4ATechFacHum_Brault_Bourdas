@@ -2,30 +2,63 @@
   "address": "BTH98:D3:51:FE:87:0E",
   "frequency": 1000,
   "ports": {
-    "x": 1,
-    "y": 3,
+    "x": 3,
+    "y": 1,
     "z": 2
   },
+  "ports_override": {
+    "x": null,
+    "y": null,
+    "z": null,
+    "ppg": null,
+    "emg": 5,
+    "eda": 6
+  },
   "rest": {
-    "x": 527.4045363908275,
-    "y": 608.2991026919242,
-    "z": 518.1170239282153
+    "x": 511.85662545272885,
+    "y": 403.8781066566754,
+    "z": 501.2527788185338
   },
   "range": {
     "x_min": 13,
-    "x_max": 865,
-    "y_min": 12,
-    "y_max": 870
+    "x_max": 1009,
+    "y_min": -66,
+    "y_max": 872
   },
   "dead_zone": 0.3,
+  "invert": {
+    "x": true,
+    "y": true
+  },
   "ppg": {
     "port": 4,
-    "bpm_rest": 72
+    "bpm_rest": 74
+  },
+  "emg": {
+    "port": 5,
+    "sigma_rest": 0.47,
+    "sigma_flex": 6.72,
+    "gain": 1.0,
+    "dead_zone": 0.491,
+    "threshold": 3.54
+  },
+  "eda": {
+    "port": 6,
+    "rest": 4.07
+  },
+  "skipped": {
+    "ppg": false,
+    "accel": false,
+    "emg": false,
+    "eda": false
   },
   "mapping": {
     "left": "x < x_rest - dead_zone * (x_rest - x_min)",
     "right": "x > x_rest + dead_zone * (x_max - x_rest)",
     "up": "y > y_rest + dead_zone * (y_max - y_rest)",
-    "down": "y < y_rest - dead_zone * (y_rest - y_min)"
+    "down": "y < y_rest - dead_zone * (y_rest - y_min)",
+    "invert_x": "si invert.x : échanger left ↔ right",
+    "invert_y": "si invert.y : échanger up ↔ down",
+    "emg_active": "sigma_rest + gain*(sigma_emg - sigma_rest) >= emg.threshold"
   }
 }
